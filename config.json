@@ -1,0 +1,30 @@
+{
+  "routes": [
+    { "path": "/login", "src": "src/pages/LoginPage.tsx" },
+    { "path": "/dashboard", "src": "src/pages/DashboardPage.tsx" },
+    { "path": "/productos", "src": "src/pages/ProductsPage.tsx" },
+    { "path": "/inventario", "src": "src/pages/InventoryPage.tsx" },
+    { "path": "/movimientos", "src": "src/pages/MovementsPage.tsx" },
+    { "path": "/punto-de-venta", "src": "src/pages/POSPage.tsx" },
+    { "path": "/ventas", "src": "src/pages/SalesPage.tsx" },
+    { "path": "/usuarios", "src": "src/pages/UsersPage.tsx" },
+    { "path": "/negocios", "src": "src/pages/BusinessesPage.tsx" },
+    { "path": "/configuracion", "src": "src/pages/SettingsPage.tsx" },
+    { "path": "/stock", "src": "src/pages/StockPage.tsx" }
+  ],
+  "components": [
+    { "name": "AppLayout", "src": "src/components/layout/AppLayout.tsx" },
+    { "name": "Sidebar", "src": "src/components/layout/Sidebar.tsx" },
+    { "name": "TopBar", "src": "src/components/layout/TopBar.tsx" },
+    { "name": "Button", "src": "src/components/ui/button.tsx" },
+    { "name": "Input", "src": "src/components/ui/input.tsx" },
+    { "name": "Card", "src": "src/components/ui/card.tsx" },
+    { "name": "Badge", "src": "src/components/ui/badge.tsx" },
+    { "name": "Table", "src": "src/components/ui/table.tsx" },
+    { "name": "Dialog", "src": "src/components/ui/dialog.tsx" },
+    { "name": "Select", "src": "src/components/ui/select.tsx" },
+    { "name": "Tabs", "src": "src/components/ui/tabs.tsx" },
+    { "name": "Avatar", "src": "src/components/ui/avatar.tsx" },
+    { "name": "Separator", "src": "src/components/ui/separator.tsx" }
+  ]
+}
