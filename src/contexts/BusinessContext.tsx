@@ -20,17 +20,29 @@ const BusinessContext = createContext<BusinessContextType | undefined>(undefined
 
 export const BusinessProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentBusinessId, setCurrentBusinessId] = useState<string>(() => {
-    return localStorage.getItem('current_business_id') || DEFAULT_BUSINESS_ID;
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsed = JSON.parse(user);
+      return parsed.negocioId || DEFAULT_BUSINESS_ID;
+    }
+
+    return DEFAULT_BUSINESS_ID;
   });
 
   const [data, setData] = useState<BusinessData>(() => getBusinessData(currentBusinessId));
   const [allBusinessIds, setAllBusinessIds] = useState<string[]>(() => getAllBusinesses());
 
   useEffect(() => {
-    localStorage.setItem('current_business_id', currentBusinessId);
-    setData(getBusinessData(currentBusinessId));
-  }, [currentBusinessId]);
+    const user = localStorage.getItem("user");
 
+    if (user) {
+      const parsed = JSON.parse(user);
+      if (parsed.negocioId) {
+        setCurrentBusinessId(parsed.negocioId);
+      }
+    }
+  }, []);
+  
   const switchBusiness = (id: string) => {
     setCurrentBusinessId(id);
   };

@@ -19,13 +19,32 @@ const LoginPage = () => {
     setError('');
     setLoading(true);
     
-    const success = await login(username, password);
-    if (success) {
-      navigate('/dashboard');
+    const result = await login(username, password);
+
+    console.log("Resultado del login:", result);
+
+    if (result.success) {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+      if (user.rol === "ADMINISTRADOR") {
+        navigate('/dashboard');
+      }
+
+      if (user.rol === "CAJERO") {
+        navigate('/punto-de-venta');
+      }
+
+      setLoading(false);
+
     } else {
-      setError('Credenciales incorrectas. Intente con admin/admin123 o cajero/cajero123');
+      setError(result.message || "Error al iniciar sesión.");
+
+      // limpiar únicamente la contraseña
+      setPassword("");
+
+      // volver a habilitar el botón
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

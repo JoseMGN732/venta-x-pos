@@ -1,68 +1,119 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User, Role } from '../types';
-import { DEFAULT_BUSINESS_ID } from '../lib/constants';
+import React, { createContext, useContext, useEffect, useState } from "react";
+
+interface User {
+  id: number;
+  nombre: string;
+  usuario: string;
+  rol: string;
+  negocioId: number;
+}
 
 interface AuthContextType {
   user: User | null;
-  login: (username: string, password: string) => Promise<boolean>;
+  login: (
+    username: string,
+    password: string
+  ) => Promise<{
+    success: boolean;
+    message?: string;
+  }>;
   logout: () => void;
-  isAuthenticated: boolean;
-  role: Role | null;
+  loading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const isAuthenticated = !!user;
+  const role = user?.rol;
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('auth_user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
+    const initAuth = () => {
+      try {
+        const savedUser = localStorage.getItem("user");
+
+        if (savedUser) {
+          const parsed = JSON.parse(savedUser);
+          setUser(parsed);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error("Error cargando sesión:", error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initAuth();
   }, []);
 
-  const login = async (username: string, password: string): Promise<boolean> => {
-    // In a real app, this would be an API call
-    // For demo, we check against DEMO_USERS or localStorage users of the current business
-    // To keep it simple as requested:
-    if (username === 'admin' && password === 'admin123') {
-      const u: User = { id: 'user-admin', username: 'admin', nombre: 'Administrador Demo', rol: 'Administrador', negocioId: DEFAULT_BUSINESS_ID };
-      setUser(u);
-      localStorage.setItem('auth_user', JSON.stringify(u));
-      return true;
+  // 🔐 LOGIN
+  const login = async (username: string, password: string) => {
+    try {
+      const response = await fetch("http://localhost:3001/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+          uuid: "POS-PRINCIPAL",
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        return {
+          success: false,
+          message: data.message,
+        };
+      }
+
+      // 🔥 guardar sesión
+      setUser(data.user);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      console.log("Usuario recibido:", data.user);
+
+      return {
+        success: true,
+      };
+    } catch (error) {
+      console.error("Error login:", error);
+      return {
+        success: false,
+        message: "No fue posible conectar con el servidor.",
+      };
     }
-    if (username === 'cajero' && password === 'cajero123') {
-      const u: User = { id: 'user-cajero', username: 'cajero', nombre: 'Cajero Demo', rol: 'Cajero', negocioId: DEFAULT_BUSINESS_ID };
-      setUser(u);
-      localStorage.setItem('auth_user', JSON.stringify(u));
-      return true;
-    }
-    return false;
   };
 
+  // 🚪 LOGOUT
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('auth_user');
+    localStorage.removeItem("user");
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      login, 
-      logout, 
-      isAuthenticated: !!user,
-      role: user?.rol || null 
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        loading,
+        isAuthenticated,
+        role,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);

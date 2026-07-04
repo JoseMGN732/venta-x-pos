@@ -14,17 +14,30 @@ import SettingsPage from './pages/SettingsPage';
 import StockPage from './pages/StockPage';
 import { useAuth } from './contexts/AuthContext';
 
-const ProtectedRoute = ({ children, roles }: { children: React.ReactNode, roles?: string[] }) => {
-  const { isAuthenticated, role } = useAuth();
-  
-  if (!isAuthenticated) {
+const ProtectedRoute = ({
+  children,
+  roles,
+}: {
+  children: React.ReactNode;
+  roles?: string[];
+}) => {
+  const { user, loading } = useAuth();
+
+  // 🔥 IMPORTANTE: esperar a que cargue localStorage
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
+  // ❌ si no hay usuario
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
-  
-  if (roles && role && !roles.includes(role)) {
+
+  // 🔐 validación de roles
+  if (roles && !roles.includes(user.rol)) {
     return <Navigate to="/dashboard" replace />;
   }
-  
+
   return <>{children}</>;
 };
 
@@ -43,25 +56,25 @@ function App() {
         } />
         
         <Route path="productos" element={
-          <ProtectedRoute roles={['Administrador']}>
+          <ProtectedRoute roles={['ADMINISTRADOR']}>
             <ProductsPage />
           </ProtectedRoute>
         } />
         
         <Route path="inventario" element={
-          <ProtectedRoute roles={['Administrador']}>
+          <ProtectedRoute roles={['ADMINISTRADOR']}>
             <InventoryPage />
           </ProtectedRoute>
         } />
         
         <Route path="movimientos" element={
-          <ProtectedRoute roles={['Administrador']}>
+          <ProtectedRoute roles={['ADMINISTRADOR']}>
             <MovementsPage />
           </ProtectedRoute>
         } />
         
         <Route path="ventas" element={
-          <ProtectedRoute roles={['Administrador']}>
+          <ProtectedRoute roles={['ADMINISTRADOR']}>
             <SalesPage />
           </ProtectedRoute>
         } />
@@ -73,19 +86,19 @@ function App() {
         } />
         
         <Route path="usuarios" element={
-          <ProtectedRoute roles={['Administrador']}>
+          <ProtectedRoute roles={['ADMINISTRADOR']}>
             <UsersPage />
           </ProtectedRoute>
         } />
         
         <Route path="negocios" element={
-          <ProtectedRoute roles={['Administrador']}>
+          <ProtectedRoute roles={['ADMINISTRADOR']}>
             <BusinessesPage />
           </ProtectedRoute>
         } />
         
         <Route path="configuracion" element={
-          <ProtectedRoute roles={['Administrador']}>
+          <ProtectedRoute roles={['ADMINISTRADOR']}>
             <SettingsPage />
           </ProtectedRoute>
         } />

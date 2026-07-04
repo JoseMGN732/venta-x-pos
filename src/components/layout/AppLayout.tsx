@@ -5,9 +5,13 @@ import TopBar from './TopBar';
 import { useAuth } from '../../contexts/AuthContext';
 
 const AppLayout = () => {
-  const { isAuthenticated } = useAuth();
+  const { user, loading } = useAuth();
 
-  if (!isAuthenticated) {
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 

@@ -15,8 +15,8 @@ import { Button } from '../components/ui/button';
 
 const DashboardPage = () => {
   const { data } = useBusiness();
-  const { role } = useAuth();
-  const isAdmin = role === 'Administrador';
+  const { user } = useAuth();
+  const isAdmin = user?.rol?.toUpperCase() === 'ADMINISTRADOR';
 
   const totalProducts = data.products.length;
   const lowStockProducts = data.products.filter(p => p.stock <= 5).length;
@@ -63,7 +63,7 @@ const DashboardPage = () => {
   if (!isAdmin) {
     return (
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold text-slate-900">Bienvenido, {role}</h1>
+        <h1 className="text-3xl font-bold text-slate-900">Bienvenido, {user?.nombre}</h1>
         <div className="grid gap-6 md:grid-cols-2">
           <Card className="hover:shadow-md transition-shadow border-blue-100">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
