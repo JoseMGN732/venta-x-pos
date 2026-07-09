@@ -47,10 +47,22 @@ const Sidebar = () => {
   return (
     <div className="flex h-full w-64 flex-col border-r bg-slate-50">
 
-      <div className="flex h-16 items-center border-b px-6">
-        <span className="text-xl font-bold text-blue-600">
-          Venta X
-        </span>
+      <div className="flex items-center gap-4">
+        <img
+            src="../../public/pwa-192x192.png"
+            alt="Venta X"
+            className="w-16 h-16"
+        />
+
+        <div>
+          <h1 className="text-xl font-bold">
+            Venta X
+          </h1>
+
+          <p className="text-xs text-slate-500">
+            Synkro ERP Solutions
+          </p>
+        </div>
       </div>
 
       <div className="px-6 py-3 border-b">

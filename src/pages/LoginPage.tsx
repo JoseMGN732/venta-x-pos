@@ -52,11 +52,13 @@ const LoginPage = () => {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
-            <div className="rounded-full bg-blue-600 p-3 text-white">
-              <LogIn className="h-8 w-8" />
-            </div>
+            <img
+              src="../../public/pwa-192x192.png"
+              alt="Venta X"
+              className="w-52 h-52 object-contain mx-auto"
+            />
           </div>
-          <CardTitle className="text-2xl font-bold">ComercioPro</CardTitle>
+          <CardTitle className="text-2xl font-bold">Venta X</CardTitle>
           <CardDescription>
             Ingrese sus credenciales para acceder al sistema
           </CardDescription>

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
+import { Sale } from '../types';
 
 const DashboardPage = () => {
   const { data } = useBusiness();
@@ -28,6 +29,72 @@ const DashboardPage = () => {
   const currentMonth = today.substring(0, 7);
   const salesMonth = data.sales.filter(s => s.fecha.startsWith(currentMonth));
   const totalSalesMonth = salesMonth.reduce((acc, s) => acc + s.total, 0);
+
+  // Total de tickets realizados hoy
+  const totalTicketsToday = salesToday.length;
+
+  // Ganancia del mes (por ahora igual a ventas)
+  const totalProfitMonth = totalSalesMonth;
+
+  // ===== Ventas últimos 7 días =====
+  const salesLast7Days = [];
+
+  // ===== Top 5 productos más vendidos =====
+  const topProducts = data.products
+    .map(product => {
+
+        let vendidos = 0;
+
+        data.sales.forEach(sale => {
+            sale.items.forEach(item => {
+                if (item.productoId === product.id) {
+                    vendidos += item.cantidad;
+                }
+            });
+        });
+
+        return {
+            ...product,
+            vendidos
+        };
+
+    })
+    .filter(product => product.vendidos > 0)
+    .sort((a,b)=>b.vendidos-a.vendidos)
+    .slice(0,5);
+
+  const criticalStock = data.products
+    .filter(product => product.stock <= 5)
+    .sort((a,b)=>a.stock-b.stock);
+
+  const getCantidadArticulos = (sale: Sale) =>
+    sale.items.reduce(
+        (acc, item) => acc + item.cantidad,
+        0
+    );
+
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+
+    const day = date.toISOString().split("T")[0];
+
+    const total = data.sales
+      .filter(sale => sale.fecha === day)
+      .reduce((sum, sale) => sum + sale.total, 0);
+
+    salesLast7Days.push({
+      label: date.toLocaleDateString("es-MX", {
+        weekday: "short"
+      }),
+      total
+    });
+  }
+
+  const maxSale = Math.max(
+    ...salesLast7Days.map(day => day.total),
+    1
+  );
 
   const stats = [
     {
@@ -57,6 +124,20 @@ const DashboardPage = () => {
       icon: TrendingUp,
       color: 'text-purple-600',
       bg: 'bg-purple-100',
+    },
+    {
+      title: 'Tickets Hoy',
+      value: totalTicketsToday,
+      icon: ShoppingCart,
+      color: 'text-orange-600',
+      bg: 'bg-orange-100',
+    },
+    {
+      title: 'Ganancia Mes',
+      value: `${data.config.moneda} ${totalProfitMonth.toFixed(2)}`,
+      icon: DollarSign,
+      color: 'text-emerald-600',
+      bg: 'bg-emerald-100',
     },
   ];
 
@@ -101,7 +182,27 @@ const DashboardPage = () => {
         <p className="text-slate-500">Resumen de operaciones de {data.config.info.nombre}</p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-3 flex flex-wrap gap-6 text-sm text-slate-600">
+
+          <span>
+              <strong>Productos:</strong> {data.products.length}
+          </span>
+
+          <span>
+              <strong>Ventas:</strong> {data.sales.length}
+          </span>
+
+          <span>
+              <strong>Usuarios:</strong> {data.users.length}
+          </span>
+
+          <span>
+              <strong>Negocio:</strong> {data.config.info.nombre}
+          </span>
+
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-3 xl:grid-cols-6">
         {stats.map((stat, i) => (
           <Card key={i}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -117,26 +218,45 @@ const DashboardPage = () => {
         ))}
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="lg:col-span-4">
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Tendencia de Ventas (Últimos 7 días)</CardTitle>
           </CardHeader>
           <CardContent className="h-[300px] flex items-end justify-between gap-2 px-6">
             {/* Simple SVG Chart simulation */}
-            {[40, 65, 30, 85, 55, 90, 75].map((height, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 flex-1">
-                <div 
-                  className="w-full bg-blue-500 rounded-t-md transition-all hover:bg-blue-600" 
-                  style={{ height: `${height}%` }}
-                ></div>
-                <span className="text-[10px] text-slate-500">Día {i+1}</span>
-              </div>
-            ))}
+            {salesLast7Days.map((day, i) => {
+
+              const height = (day.total / maxSale) * 100;
+
+              return (
+
+                <div
+                  key={i}
+                  className="flex flex-col items-center gap-2 flex-1"
+                >
+
+                  <div
+                    className="w-full bg-blue-600 rounded-t-md transition-all hover:bg-blue-700"
+                    style={{
+                      height: `${height}%`,
+                      minHeight: "6px"
+                    }}
+                  />
+
+                  <span className="text-[10px] text-slate-500">
+                    {day.label}
+                  </span>
+
+                </div>
+
+              );
+
+            })}
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-3">
+        <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Ventas Recientes</CardTitle>
           </CardHeader>
@@ -145,7 +265,7 @@ const DashboardPage = () => {
               {data.sales.slice(-5).reverse().map((sale) => (
                 <div key={sale.id} className="flex items-center justify-between border-b pb-2 last:border-0">
                   <div className="flex flex-col">
-                    <span className="text-sm font-medium">{sale.items.length} productos</span>
+                    <span className="text-sm font-medium">{getCantidadArticulos(sale)} artículos</span>
                     <span className="text-xs text-slate-500">{sale.fecha} {sale.hora}</span>
                   </div>
                   <span className="font-bold text-slate-900">
@@ -163,6 +283,105 @@ const DashboardPage = () => {
               </Button>
             )}
           </CardContent>
+        </Card>
+        <Card>
+            <CardHeader>
+                <CardTitle>Productos más vendidos</CardTitle>
+            </CardHeader>
+
+            <CardContent>
+
+                {topProducts.map((product, index) => (
+
+                    <div
+                        key={product.id}
+                        className="flex justify-between border-b py-2 last:border-0"
+                    >
+
+                        <div>
+
+                            <span className="font-medium">
+                                {index + 1}. {product.nombre}
+                            </span>
+
+                        </div>
+
+                        <span className="text-sm font-semibold text-blue-600">
+                          {product.vendidos} vendidos
+                        </span>
+
+                    </div>
+
+                ))}
+
+                {topProducts.length === 0 && (
+
+                    <p className="text-center text-slate-500">
+
+                        Sin ventas registradas
+
+                    </p>
+
+                )}
+
+            </CardContent>
+
+        </Card>
+        <Card>
+
+          <CardHeader>
+
+          <CardTitle>
+
+          Stock crítico
+
+          </CardTitle>
+
+          </CardHeader>
+
+          <CardContent>
+
+          {criticalStock.map(product=>(
+
+          <div
+          key={product.id}
+          className="flex justify-between border-b py-2 last:border-0"
+          >
+
+          <span>
+
+          {product.nombre}
+
+          </span>
+
+          <span
+            className={`font-bold ${
+                product.stock === 0
+                    ? "text-red-700"
+                    : "text-red-500"
+            }`}
+        >
+            {product.stock === 0
+                ? "AGOTADO"
+                : `${product.stock} unidades`}
+          </span>
+
+          </div>
+
+          ))}
+
+          {criticalStock.length===0 && (
+
+          <p className="text-slate-500">
+
+          Todo el inventario está correcto.
+
+          </p>
+
+          )}
+
+          </CardContent>
+
         </Card>
       </div>
     </div>
