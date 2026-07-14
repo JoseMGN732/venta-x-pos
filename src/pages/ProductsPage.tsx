@@ -23,13 +23,37 @@ import { Select } from '../components/ui/select';
 import { CATEGORIES } from '../lib/constants';
 import { Plus, Search, Edit2, Trash2, Package } from 'lucide-react';
 import { Product } from '../types';
+import {
+  getProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct
+} from "../services/productService";
+import { useEffect } from "react";
 
 const ProductsPage = () => {
-  const { data, updateProducts } = useBusiness();
+  const { data } = useBusiness();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Todas');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  const loadProducts = async () => {
+
+    const response = await getProducts();
+
+    console.log(response);
+
+    if (response.success) {
+        setProducts(response.products);
+    }
+
+  };
 
   // Form state
   const [formData, setFormData] = useState<Partial<Product>>({
@@ -41,9 +65,10 @@ const ProductsPage = () => {
     stock: 0
   });
 
-  const filteredProducts = data.products.filter(p => {
-    const matchesSearch = p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          p.sku.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredProducts = products.filter(p => {
+    const matchesSearch =
+      p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.sku.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'Todas' || p.categoria === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -66,28 +91,32 @@ const ProductsPage = () => {
     setIsModalOpen(true);
   };
 
-  const handleSave = () => {
-    const products = [...data.products];
+  const handleSave = async () => {
+
     if (editingProduct) {
-      const index = products.findIndex(p => p.id === editingProduct.id);
-      products[index] = { ...editingProduct, ...formData } as Product;
+
+      await updateProduct(editingProduct.id, formData);
+
     } else {
-      const newProduct: Product = {
-        ...formData,
-        id: `p-${Date.now()}`,
-        negocioId: data.config.negocioId
-      } as Product;
-      products.push(newProduct);
+
+      await createProduct(formData);
+
     }
-    updateProducts(products);
+
+    await loadProducts();
+
     setIsModalOpen(false);
+
   };
 
-  const handleDelete = (id: string) => {
-    if (confirm('¿Está seguro de eliminar este producto?')) {
-      const products = data.products.filter(p => p.id !== id);
-      updateProducts(products);
-    }
+  const handleDelete = async (id: string) => {
+
+    if (!confirm("¿Eliminar este producto?")) return;
+
+    await deleteProduct(id);
+
+    await loadProducts();
+
   };
 
   return (
@@ -147,7 +176,9 @@ const ProductsPage = () => {
                 </TableCell>
                 <TableCell>{product.categoria}</TableCell>
                 <TableCell className="font-mono text-xs">{product.sku}</TableCell>
-                <TableCell>{data.config.moneda} {product.precioVenta.toFixed(2)}</TableCell>
+                <TableCell>
+                  {data.config.moneda} {product.precioVenta.toFixed(2)}
+                </TableCell>
                 <TableCell>
                   <Badge variant={product.stock <= 5 ? "destructive" : "secondary"}>
                     {product.stock} unidades

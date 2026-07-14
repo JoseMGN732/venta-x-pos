@@ -1,4 +1,3 @@
-import React from 'react';
 import { useBusiness } from '../contexts/BusinessContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -10,17 +9,21 @@ import {
   ShoppingCart,
   ArrowRight
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { Sale } from '../types';
+import { Product, Sale } from '../types';
+import React, { useEffect, useState } from "react";
+import { getProducts } from "../services/productService";
 
 const DashboardPage = () => {
   const { data } = useBusiness();
+  const [products, setProducts] = useState<Product[]>([]);
   const { user } = useAuth();
+  const location = useLocation();
   const isAdmin = user?.rol?.toUpperCase() === 'ADMINISTRADOR';
 
-  const totalProducts = data.products.length;
-  const lowStockProducts = data.products.filter(p => p.stock <= 5).length;
+  const totalProducts = products.length;
+  const lowStockProducts = products.filter(p => p.stock <= 5).length;
   
   const today = new Date().toISOString().split('T')[0];
   const salesToday = data.sales.filter(s => s.fecha === today);
@@ -29,6 +32,20 @@ const DashboardPage = () => {
   const currentMonth = today.substring(0, 7);
   const salesMonth = data.sales.filter(s => s.fecha.startsWith(currentMonth));
   const totalSalesMonth = salesMonth.reduce((acc, s) => acc + s.total, 0);
+
+  useEffect(() => {
+
+    loadProducts();
+
+  }, [location.pathname]);
+
+  const loadProducts = async () => {
+
+    const response = await getProducts();
+
+    setProducts(response.products);
+
+  };
 
   // Total de tickets realizados hoy
   const totalTicketsToday = salesToday.length;
@@ -40,14 +57,14 @@ const DashboardPage = () => {
   const salesLast7Days = [];
 
   // ===== Top 5 productos más vendidos =====
-  const topProducts = data.products
+  const topProducts = products
     .map(product => {
 
         let vendidos = 0;
 
         data.sales.forEach(sale => {
             sale.items.forEach(item => {
-                if (item.productoId === product.id) {
+                if (item.productId == product.id) {
                     vendidos += item.cantidad;
                 }
             });
@@ -63,7 +80,7 @@ const DashboardPage = () => {
     .sort((a,b)=>b.vendidos-a.vendidos)
     .slice(0,5);
 
-  const criticalStock = data.products
+  const criticalStock = products
     .filter(product => product.stock <= 5)
     .sort((a,b)=>a.stock-b.stock);
 
@@ -185,7 +202,7 @@ const DashboardPage = () => {
       <div className="mt-3 flex flex-wrap gap-6 text-sm text-slate-600">
 
           <span>
-              <strong>Productos:</strong> {data.products.length}
+              <strong>Productos:</strong> {products.length}
           </span>
 
           <span>

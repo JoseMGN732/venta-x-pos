@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useMemo } from '
 import { BusinessData, Product, Sale, StockMovement, User, BusinessConfig } from '../types';
 import { getBusinessData, saveBusinessData, getAllBusinesses } from '../lib/storage';
 import { DEFAULT_BUSINESS_ID } from '../lib/constants';
+import { getProducts } from "../services/productService";
 
 interface BusinessContextType {
   currentBusinessId: string;
@@ -41,6 +42,31 @@ export const BusinessProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setCurrentBusinessId(parsed.negocioId);
       }
     }
+  }, []);
+
+  useEffect(() => {
+
+    const loadProducts = async () => {
+
+      try {
+
+        const response = await getProducts();
+
+        setData(prev => ({
+          ...prev,
+          products: response.products
+        }));
+
+      } catch (error) {
+
+        console.error("Error cargando productos", error);
+
+      }
+
+    };
+
+    loadProducts();
+
   }, []);
   
   const switchBusiness = (id: string) => {
