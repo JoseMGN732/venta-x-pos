@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1784335682688,
+    "productoId": 1784335656033,
+    "producto": "Coca cola 600 ml",
+    "tipo": "entrada",
+    "cantidad": 20,
+    "stockAnterior": 30,
+    "stockNuevo": 50,
+    "motivo": "Compra proveedor",
+    "usuario": "admin",
+    "fecha": "2026-07-18",
+    "hora": "6:48:02 p.m."
+  }
+]

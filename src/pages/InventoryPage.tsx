@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useBusiness } from '../contexts/BusinessContext';
 import { 
   Table, 
@@ -12,14 +11,31 @@ import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
 import { Search, AlertTriangle, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { getProducts } from "../services/productService";
+import { Product } from "../types";
 
 const InventoryPage = () => {
   const { data } = useBusiness();
+
+  const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const lowStockItems = data.products.filter(p => p.stock <= 5);
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  const loadProducts = async () => {
+
+      const response = await getProducts();
+
+      setProducts(response.products);
+
+  };
+
+  const lowStockItems = products.filter(p => p.stock <= 5);
   
-  const filteredProducts = data.products.filter(p => 
+  const filteredProducts = products.filter(p => 
     p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) || 
     p.sku.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -51,7 +67,7 @@ const InventoryPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">
-              {data.config.moneda} {data.products.reduce((acc, p) => acc + (p.precioCompra * p.stock), 0).toFixed(2)}
+              {data.config.moneda} {products.reduce((acc, p) => acc + (p.precioCompra * p.stock), 0).toFixed(2)}
             </div>
             <p className="text-xs text-slate-500 mt-1">Basado en precio de compra</p>
           </CardContent>
@@ -64,7 +80,7 @@ const InventoryPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">
-              {data.config.moneda} {data.products.reduce((acc, p) => acc + (p.precioVenta * p.stock), 0).toFixed(2)}
+              {data.config.moneda} {products.reduce((acc, p) => acc + (p.precioVenta * p.stock), 0).toFixed(2)}
             </div>
             <p className="text-xs text-slate-500 mt-1">Potencial de ingresos total</p>
           </CardContent>

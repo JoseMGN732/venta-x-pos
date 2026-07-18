@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBusiness } from '../contexts/BusinessContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from '../components/ui/button';
@@ -22,11 +22,34 @@ import {
 } from '../components/ui/dialog';
 import { Plus, ArrowUpRight, ArrowDownRight, History } from 'lucide-react';
 import { StockMovement, Product } from '../types';
+import { getProducts } from "../services/productService";
+
+import {
+    getMovements,
+    createMovement
+} from "../services/movementService";
 
 const MovementsPage = () => {
-  const { data, updateMovements, updateProducts } = useBusiness();
+  const { data } = useBusiness();
+  const [movements, setMovements] = useState<StockMovement[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    loadProducts();
+    loadMovements();
+  }, []);
+
+  const loadProducts = async () => {
+    const response = await getProducts();
+    setProducts(response.products);
+  };
+
+  const loadMovements = async () => {
+    const response = await getMovements();
+    setMovements(response.movements);
+  };
   
   const [formData, setFormData] = useState({
     productoId: '',
@@ -35,46 +58,44 @@ const MovementsPage = () => {
     motivo: ''
   });
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!formData.productoId || formData.cantidad <= 0) return;
 
-    const products = [...data.products];
-    const productIndex = products.findIndex(p => p.id === formData.productoId);
-    
-    if (productIndex === -1) return;
+    const product = products.find(
+      (p) => p.id == formData.productoId
+    );
 
-    const product = products[productIndex];
-    
-    // Update stock
-    if (formData.tipo === 'entrada') {
-      product.stock += formData.cantidad;
-    } else {
-      if (product.stock < formData.cantidad) {
-        alert('Stock insuficiente para realizar esta salida.');
-        return;
-      }
-      product.stock -= formData.cantidad;
+    if (!product) {
+      alert("Producto no encontrado.");
+      return;
     }
 
-    const newMovement: StockMovement = {
-      id: `m-${Date.now()}`,
-      productoId: formData.productoId,
+    // Registrar movimiento
+    await createMovement({
+      productoId: product.id,
       tipo: formData.tipo,
       cantidad: formData.cantidad,
       motivo: formData.motivo,
-      fecha: new Date().toISOString().split('T')[0],
-      usuario: user?.nombre || 'Desconocido',
-      negocioId: data.config.negocioId
-    };
+      usuario: user?.nombre || "Administrador",
+    });
 
-    updateProducts(products);
-    updateMovements([newMovement, ...data.movements]);
+    // Recargar información
+    await loadProducts();
+    await loadMovements();
+
+    // Cerrar ventana
     setIsModalOpen(false);
-    setFormData({ productoId: '', tipo: 'entrada', cantidad: 1, motivo: '' });
-  };
 
-  const getProductName = (id: string) => {
-    return data.products.find(p => p.id === id)?.nombre || 'Producto Eliminado';
+    // Limpiar formulario
+    setFormData({
+      productoId: "",
+      tipo: "entrada",
+      cantidad: 1,
+      motivo: "",
+    });
+  };
+  const getProductName = (id: number | string) => {
+    return products.find((p) => p.id == id)?.nombre || "Producto Eliminado";
   };
 
   return (
@@ -106,7 +127,7 @@ const MovementsPage = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.movements.map((m) => (
+            {movements.map((m) => (
               <TableRow key={m.id}>
                 <TableCell className="text-xs">{m.fecha}</TableCell>
                 <TableCell className="font-medium">{getProductName(m.productoId)}</TableCell>
@@ -127,10 +148,14 @@ const MovementsPage = () => {
                 </TableCell>
                 <TableCell className="font-bold">{m.cantidad}</TableCell>
                 <TableCell className="text-slate-600 max-w-[200px] truncate">{m.motivo}</TableCell>
-                <TableCell className="text-xs">{m.usuario}</TableCell>
+                <TableCell className="text-xs">
+                  {typeof m.usuario === "object"
+                    ? m.usuario.nombre
+                    : m.usuario}
+                </TableCell>
               </TableRow>
             ))}
-            {data.movements.length === 0 && (
+            {movements.length === 0 && (
               <TableRow>
                 <TableCell colSpan={6} className="h-24 text-center text-slate-500">
                   No hay movimientos registrados.
@@ -155,7 +180,7 @@ const MovementsPage = () => {
               <Select 
                 options={[
                   { label: '-- Seleccione un producto --', value: '' },
-                  ...data.products.map(p => ({ label: `${p.nombre} (${p.stock} en stock)`, value: p.id }))
+                  ...products.map(p => ({ label: `${p.nombre} (${p.stock} en stock)`, value: String(p.id) }))
                 ]}
                 value={formData.productoId}
                 onChange={(e) => setFormData({...formData, productoId: e.target.value})}

@@ -1,20 +1,11 @@
 [
   {
-    "id": 1783737312732,
-    "nombre": "Coca Cola 600 ml",
+    "id": 1784335656033,
+    "nombre": "Coca cola 600 ml",
     "categoria": "Bebidas",
-    "sku": "750100",
+    "sku": "SKU-1928",
     "precioCompra": 18,
     "precioVenta": 22,
-    "stock": 15
-  },
-  {
-    "id": 1783992003383,
-    "nombre": "Pepsi 600 ml",
-    "categoria": "Bebidas",
-    "sku": "SKU-7933",
-    "precioCompra": 15,
-    "precioVenta": 18,
-    "stock": 20
+    "stock": 50
   }
 ]
