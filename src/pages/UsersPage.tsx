@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useBusiness } from '../contexts/BusinessContext';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { 
@@ -21,9 +20,18 @@ import {
 import { Select } from '../components/ui/select';
 import { User, Role } from '../types';
 import { UserPlus, Shield, User as UserIcon, Edit2, Trash2 } from 'lucide-react';
+import {
+    getUsers,
+    createUser,
+    updateUser,
+    deleteUser
+} from "../services/userService";
+import { useAuth } from '../contexts/AuthContext';
 
 const UsersPage = () => {
-  const { data, updateUsers } = useBusiness();
+  const { user } = useAuth();
+
+  const [users, setUsers] = useState<User[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
@@ -33,6 +41,43 @@ const UsersPage = () => {
     rol: 'Cajero',
     password: ''
   });
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
+  const loadUsers = async () => {
+    const response = await getUsers();
+
+    if (response.success) {
+
+        setUsers(
+
+            response.users.map((u: any) => ({
+
+                id: u.id_usuario,
+
+                username: u.usuario,
+
+                nombre: u.nombre,
+
+                rol:
+                    u.rol === "ADMINISTRADOR"
+                        ? "Administrador"
+                        : "Cajero",
+
+                password: "",
+
+                negocioId: u.id_negocio,
+
+                activo: u.activo
+
+            }))
+
+        );
+
+    }
+  };
 
   const handleOpenModal = (user?: User) => {
     if (user) {
@@ -50,31 +95,79 @@ const UsersPage = () => {
     setIsModalOpen(true);
   };
 
-  const handleSave = () => {
-    const users = [...data.users];
-    if (editingUser) {
-      const index = users.findIndex(u => u.id === editingUser.id);
-      users[index] = { ...editingUser, ...formData } as User;
-    } else {
-      const newUser: User = {
-        ...formData,
-        id: `u-${Date.now()}`,
-        negocioId: data.config.negocioId
-      } as User;
-      users.push(newUser);
+  const handleSave = async () => {
+
+    if (!formData.nombre || !formData.username) {
+      return;
     }
-    updateUsers(users);
+
+    if (!editingUser && !formData.password) {
+      return;
+    }
+
+    if (editingUser) {
+
+        const body: any = {
+          nombre: formData.nombre,
+          usuario: formData.username,
+          rol:
+              formData.rol === "Administrador"
+                  ? "ADMINISTRADOR"
+                  : "CAJERO",
+          activo: editingUser.activo
+        };
+
+        if (formData.password) {
+            body.password = formData.password;
+        }
+
+        await updateUser(editingUser.id, body);
+
+    } else {
+
+        await createUser({
+
+            id_negocio: user?.negocioId,
+
+            nombre: formData.nombre,
+
+            usuario: formData.username,
+
+            password: formData.password,
+
+            rol:
+                formData.rol === "Administrador"
+                    ? "ADMINISTRADOR"
+                    : "CAJERO"
+
+        });
+
+    }
+
+    await loadUsers();
+
+    setFormData({
+        username: "",
+        nombre: "",
+        rol: "Cajero",
+        password: ""
+    });
+
+    setEditingUser(null);
+
     setIsModalOpen(false);
+
   };
 
-  const handleDelete = (id: string) => {
-    if (id === 'user-admin') {
-      alert('No se puede eliminar el administrador principal.');
+  const handleDelete = async (id: number) => {
+    if (user?.id === id) {
+      alert("No puedes eliminar el usuario con el que has iniciado sesión.");
       return;
     }
     if (confirm('¿Está seguro de eliminar este usuario?')) {
-      const users = data.users.filter(u => u.id !== id);
-      updateUsers(users);
+      await deleteUser(id);
+
+      await loadUsers();
     }
   };
 
@@ -102,7 +195,7 @@ const UsersPage = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.users.map((user) => (
+            {users.map((user) => (
               <TableRow key={user.id}>
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-3">
@@ -126,9 +219,29 @@ const UsersPage = () => {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="flex items-center gap-1.5 text-green-600 text-xs font-medium">
-                    <span className="h-1.5 w-1.5 rounded-full bg-green-600"></span>
-                    Activo
+                  <span
+                    className={`flex items-center gap-1.5 text-xs font-medium ${
+                        user.activo
+                            ? "text-green-600"
+                            : "text-red-600"
+                    }`}
+                  >
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full ${
+                          user.activo
+                              ? "bg-green-600"
+                              : "bg-red-600"
+                      }`}
+                    />
+                    {user.activo ? (
+                      <span className="text-green-600">
+                          Activo
+                      </span>
+                    ) : (
+                      <span className="text-red-600">
+                        Inactivo
+                      </span>
+                    )}
                   </span>
                 </TableCell>
                 <TableCell className="text-right">
@@ -196,7 +309,21 @@ const UsersPage = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancelar</Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                  setIsModalOpen(false);
+
+                  setEditingUser(null);
+
+                  setFormData({
+                      username: "",
+                      nombre: "",
+                      rol: "Cajero",
+                      password: ""
+                  });
+              }}
+            >Cancelar</Button>
             <Button onClick={handleSave} className="bg-blue-600">Guardar</Button>
           </DialogFooter>
         </DialogContent>
