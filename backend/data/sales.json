@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1785339793203,
+    "negocioId": 1,
+    "fecha": "2026-07-29",
+    "hora": "9:43:13 a.m.",
+    "items": [
+      {
+        "productId": 1785290733758,
+        "nombre": "Sabritas",
+        "cantidad": 1,
+        "precioUnitario": 20,
+        "subtotal": 20
+      },
+      {
+        "productId": 1785290967489,
+        "nombre": "Coca Cola 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      }
+    ],
+    "subtotal": 42,
+    "impuesto": 6.72,
+    "total": 48.72,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": 1785341524750,
+    "negocioId": 1,
+    "fecha": "2026-07-29",
+    "hora": "10:12:04 a.m.",
+    "items": [
+      {
+        "productId": 1785291139880,
+        "nombre": "Crema",
+        "cantidad": 1,
+        "precioUnitario": 25,
+        "subtotal": 25
+      },
+      {
+        "productId": 1785290967489,
+        "nombre": "Coca Cola 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      }
+    ],
+    "subtotal": 47,
+    "impuesto": 7.5200000000000005,
+    "total": 54.52,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  }
+]

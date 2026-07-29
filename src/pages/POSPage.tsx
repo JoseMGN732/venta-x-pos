@@ -20,9 +20,11 @@ import {
 import { Sale, SaleItem, Product } from '../types';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { cn } from '../lib/utils';
+import { createSale } from "../services/saleService";
+import { getProducts } from "../services/productService";
 
 const POSPage = () => {
-  const { data, updateProducts, updateSales } = useBusiness();
+  const { data } = useBusiness();
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [cart, setCart] = useState<SaleItem[]>([]);
@@ -90,37 +92,55 @@ const POSPage = () => {
   const tax = subtotal * (data.config.impuesto / 100);
   const total = subtotal + tax;
 
-  const handleFinalizeSale = () => {
+  const handleFinalizeSale = async () => {
+
     if (cart.length === 0) return;
 
-    const now = new Date();
-    const newSale: Sale = {
-      id: `sale-${Date.now()}`,
-      fecha: now.toISOString().split('T')[0],
-      hora: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      items: [...cart],
-      subtotal,
-      impuesto: tax,
-      total,
-      metodoPago: paymentMethod,
-      cajero: user?.nombre || 'Cajero',
-      negocioId: data.config.negocioId
-    };
+    const response = await createSale({
 
-    // Update stock for all products in cart
-    const updatedProducts = data.products.map(p => {
-      const cartItem = cart.find(item => item.productId === p.id);
-      if (cartItem) {
-        return { ...p, stock: p.stock - cartItem.cantidad };
-      }
-      return p;
+        negocioId: data.config.negocioId,
+
+        items: cart,
+
+        subtotal,
+
+        impuesto: tax,
+
+        total,
+
+        metodoPago: paymentMethod,
+
+        cajero: user?.nombre || "Administrador"
+
     });
 
-    updateProducts(updatedProducts);
-    updateSales([...data.sales, newSale]);
-    setLastSale(newSale);
+    if (!response.success) {
+
+        alert(response.message);
+
+        return;
+
+    }
+
+    // Recargar productos para actualizar stock
+    const productsResponse = await getProducts();
+
+    if (productsResponse.success) {
+
+        data.products.splice(
+            0,
+            data.products.length,
+            ...productsResponse.products
+        );
+
+    }
+
+    setLastSale(response.sale);
+
     setCart([]);
+
     setShowReceipt(true);
+
   };
 
   return (
@@ -307,7 +327,7 @@ const POSPage = () => {
                   <span>HORA: {lastSale.hora}</span>
                 </div>
                 <p>CAJERO: {lastSale.cajero}</p>
-                <p>TICKET: {lastSale.id.substring(5)}</p>
+                <p>TICKET: {String(lastSale.id).slice(-6)}</p>
               </div>
 
               <div className="border-t border-b py-2 space-y-1">

@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.routes.js";
 import productsRoutes from "./routes/products.routes.js";
 import movementsRoutes from "./routes/movements.routes.js";
 import usersRoutes from "./routes/users.routes.js";
+import salesRoutes from "./routes/sales.routes.js";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/movements", movementsRoutes);
 app.use("/api/users", usersRoutes);
+app.use("/api/sales", salesRoutes);
 
 app.get("/", (req, res) => {
   res.json({ status: "Venta X Backend OK" });

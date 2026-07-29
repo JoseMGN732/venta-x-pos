@@ -31,10 +31,10 @@ export interface SaleItem {
 }
 
 export interface Sale {
-  id: string;
-  negocioId: string;
+  id: number;
   fecha: string;
   hora: string;
+  negocioId: number;
   items: SaleItem[];
   subtotal: number;
   impuesto: number;

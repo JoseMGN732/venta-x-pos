@@ -14,15 +14,37 @@ import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card'
 import { Search, Eye, Download, Calendar, Filter } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { Sale } from '../types';
+import { useEffect } from "react";
+import { getSales } from "../services/saleService";
 
 const SalesPage = () => {
   const { data } = useBusiness();
+  const [sales, setSales] = useState<Sale[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSale, setSelectedSale] = useState<Sale | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const filteredSales = data.sales.filter(s => 
-    s.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
+  useEffect(() => {
+    loadSales();
+  }, []);
+
+
+  const loadSales = async () => {
+
+      const response = await getSales();
+
+      console.log(response.sales);
+
+      console.log("VENTAS BACKEND:", response);
+
+      if(response.success){
+          setSales(response.sales);
+      }
+
+  };
+
+  const filteredSales = sales.filter(s => 
+    String(s.id).includes(searchTerm) ||
     s.cajero.toLowerCase().includes(searchTerm.toLowerCase()) ||
     s.fecha.includes(searchTerm)
   ).reverse();
@@ -50,7 +72,7 @@ const SalesPage = () => {
             <CardTitle className="text-xs font-bold text-slate-500 uppercase">Ventas Totales</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data.sales.length}</div>
+            <div className="text-2xl font-bold">{sales.length}</div>
           </CardContent>
         </Card>
         <Card>
@@ -58,7 +80,7 @@ const SalesPage = () => {
             <CardTitle className="text-xs font-bold text-slate-500 uppercase">Ingresos Brutos</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data.config.moneda} {data.sales.reduce((acc, s) => acc + s.total, 0).toFixed(2)}</div>
+            <div className="text-2xl font-bold">{data.config.moneda} {sales.reduce((acc, s) => acc + s.total, 0).toFixed(2)}</div>
           </CardContent>
         </Card>
         <Card>
@@ -67,7 +89,7 @@ const SalesPage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {data.config.moneda} {data.sales.length > 0 ? (data.sales.reduce((acc, s) => acc + s.total, 0) / data.sales.length).toFixed(2) : '0.00'}
+              {data.config.moneda} {sales.length > 0 ? (sales.reduce((acc, s) => acc + s.total, 0) / sales.length).toFixed(2) : '0.00'}
             </div>
           </CardContent>
         </Card>
@@ -76,7 +98,7 @@ const SalesPage = () => {
             <CardTitle className="text-xs font-bold text-slate-500 uppercase">Impuestos Recaudados</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data.config.moneda} {data.sales.reduce((acc, s) => acc + s.impuesto, 0).toFixed(2)}</div>
+            <div className="text-2xl font-bold">{data.config.moneda} {sales.reduce((acc, s) => acc + s.impuesto, 0).toFixed(2)}</div>
           </CardContent>
         </Card>
       </div>
@@ -117,7 +139,7 @@ const SalesPage = () => {
           <TableBody>
             {filteredSales.map((sale) => (
               <TableRow key={sale.id}>
-                <TableCell className="font-mono text-xs">{sale.id.substring(5)}</TableCell>
+                <TableCell className="font-mono text-xs">{String(sale.id).slice(-6)}</TableCell>
                 <TableCell>
                   <div className="flex flex-col">
                     <span className="text-sm">{sale.fecha}</span>
@@ -153,7 +175,7 @@ const SalesPage = () => {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>Detalle de Venta #{selectedSale?.id.substring(5)}</DialogTitle>
+            <DialogTitle>Detalle de Venta #{selectedSale ? String(selectedSale.id).slice(-6) : ""}</DialogTitle>
           </DialogHeader>
           {selectedSale && (
             <div className="space-y-4">
