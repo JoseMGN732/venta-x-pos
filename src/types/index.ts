@@ -1,16 +1,18 @@
-export type Role = 'Administrador' | 'Cajero';
+export type Role = "ADMINISTRADOR" | "CAJERO";
 
 export interface User {
-  id: string;
+  id: number;
   username: string;
   password?: string;
   nombre: string;
   rol: Role;
-  negocioId: string;
+  negocioId: number;
+  activo: number;
 }
 
 export interface Product {
   id: string;
+  negocioId: string;
   nombre: string;
   categoria: string;
   sku: string;
@@ -18,7 +20,6 @@ export interface Product {
   precioVenta: number;
   stock: number;
   imagen?: string;
-  negocioId: string;
 }
 
 export interface SaleItem {
@@ -31,6 +32,7 @@ export interface SaleItem {
 
 export interface Sale {
   id: string;
+  negocioId: string;
   fecha: string;
   hora: string;
   items: SaleItem[];
@@ -39,18 +41,17 @@ export interface Sale {
   total: number;
   metodoPago: string;
   cajero: string;
-  negocioId: string;
 }
 
 export interface StockMovement {
   id: string;
+  negocioId: string;
   productoId: string;
   tipo: 'entrada' | 'salida';
   cantidad: number;
   motivo: string;
   fecha: string;
   usuario: string;
-  negocioId: string;
 }
 
 export interface Business {

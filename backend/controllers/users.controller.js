@@ -6,7 +6,10 @@ export const getAllUsers = async (req, res) => {
 
     try {
 
-        const [rows] = await db.query(`
+        const id_negocio = Number(req.query.id_negocio);
+
+        const [rows] = await db.query(
+            `
             SELECT
                 id_usuario,
                 id_negocio,
@@ -16,8 +19,11 @@ export const getAllUsers = async (req, res) => {
                 activo,
                 fecha_creacion
             FROM usuarios_pos
+            WHERE id_negocio = ?
             ORDER BY nombre ASC
-        `);
+            `,
+            [id_negocio]
+        );
 
         res.json({
             success: true,
@@ -118,6 +124,7 @@ export const updateUser = async (req, res) => {
         const id = req.params.id;
 
         const {
+            id_negocio,
             nombre,
             usuario,
             password,
@@ -138,16 +145,19 @@ export const updateUser = async (req, res) => {
                     password_hash=?,
                     rol=?,
                     activo=?
-                WHERE id_usuario=?
+                WHERE id_usuario=? AND id_negocio=?
                 `,
+                
                 [
                     nombre,
                     usuario,
                     password_hash,
                     rol,
                     activo,
-                    id
+                    id,
+                    id_negocio
                 ]
+                
             );
 
         } else {
@@ -196,14 +206,16 @@ export const deleteUser = async (req, res) => {
     try {
 
         const id = req.params.id;
+        const { id_negocio } = req.body;
 
         await db.query(
-            `
-            UPDATE usuarios_pos
-            SET activo = 0
-            WHERE id_usuario = ?
-            `,
-            [id]
+        `
+        UPDATE usuarios_pos
+        SET activo = 0
+        WHERE id_usuario = ?
+        AND id_negocio = ?
+        `,
+        [id, id_negocio]
         );
 
         res.json({

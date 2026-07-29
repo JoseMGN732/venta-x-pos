@@ -52,9 +52,19 @@ export const BusinessProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
         const response = await getProducts();
 
+        const savedUser = localStorage.getItem("user");
+
+        if (!savedUser) return;
+
+        const usuario = JSON.parse(savedUser);
+
+        const productosFiltrados = response.products.filter(
+          (p: Product) => Number(p.negocioId) === Number(usuario.negocioId)
+        );
+
         setData(prev => ({
           ...prev,
-          products: response.products
+          products: productosFiltrados
         }));
 
       } catch (error) {

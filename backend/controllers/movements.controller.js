@@ -6,7 +6,11 @@ export const getAllMovements = (req, res) => {
 
     try {
 
-        const movements = getMovements();
+        const negocioId = Number(req.query.negocioId);
+
+        const movements = getMovements().filter(
+            m => Number(m.negocioId) === negocioId
+        );
 
         res.json({
             success: true,
@@ -34,7 +38,8 @@ export const createMovement = (req, res) => {
             tipo,
             cantidad,
             motivo,
-            usuario
+            usuario,
+            negocioId
         } = req.body;
 
         const products = getProducts();
@@ -85,6 +90,7 @@ export const createMovement = (req, res) => {
 
         const movement = {
             id: Date.now(),
+            negocioId,
             productoId: product.id,
             producto: product.nombre,
             tipo,

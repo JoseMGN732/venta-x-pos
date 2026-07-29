@@ -30,9 +30,11 @@ import {
   deleteProduct
 } from "../services/productService";
 import { useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 const ProductsPage = () => {
   const { data } = useBusiness();
+  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Todas');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,10 +49,15 @@ const ProductsPage = () => {
 
     const response = await getProducts();
 
-    console.log(response);
-
     if (response.success) {
-        setProducts(response.products);
+
+      const productosFiltrados = response.products.filter(
+        (p: Product) =>
+        Number(p.negocioId) === Number(user?.negocioId)
+      );
+
+      setProducts(productosFiltrados);
+
     }
 
   };
@@ -95,13 +102,24 @@ const ProductsPage = () => {
 
     if (editingProduct) {
 
-      await updateProduct(editingProduct.id, formData);
+      await updateProduct(editingProduct.id, {
+        ...formData,
+        negocioId: user?.negocioId
+      });
 
     } else {
 
-      await createProduct(formData);
+      await createProduct({
+        ...formData,
+        negocioId: user?.negocioId
+      });
 
     }
+
+    console.log({
+      ...formData,
+      negocioId: user?.negocioId
+    });
 
     await loadProducts();
 

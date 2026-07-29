@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 
 export const login = async (req, res) => {
   try {
-    const { username, password, uuid } = req.body;
+    const { username, password } = req.body;
 
     // 1. Usuario
     const [users] = await pool.query(
@@ -74,22 +74,6 @@ export const login = async (req, res) => {
     }
 
     const idLicencia = licencia[0].id_licencia;
-
-    // 4. DISPOSITIVO (MODO ESTRICTO)
-    const [device] = await pool.query(
-      `SELECT * FROM dispositivos_pos 
-       WHERE id_licencia = ? 
-       AND uuid_equipo = ? 
-       AND activo = 1`,
-      [idLicencia, uuid]
-    );
-
-    if (device.length === 0) {
-      return res.status(403).json({
-        success: false,
-        message: "Dispositivo no autorizado"
-      });
-    }
 
     // 5. OK LOGIN
     return res.json({

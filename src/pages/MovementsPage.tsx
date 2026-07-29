@@ -37,9 +37,13 @@ const MovementsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+
+    if (!user) return;
+
     loadProducts();
     loadMovements();
-  }, []);
+
+  }, [user]);
 
   const loadProducts = async () => {
     const response = await getProducts();
@@ -47,8 +51,15 @@ const MovementsPage = () => {
   };
 
   const loadMovements = async () => {
-    const response = await getMovements();
-    setMovements(response.movements);
+
+    if (!user) return;
+
+    const response = await getMovements(user.negocioId);
+
+    if (response.success) {
+        setMovements(response.movements);
+    }
+
   };
   
   const [formData, setFormData] = useState({
@@ -72,6 +83,7 @@ const MovementsPage = () => {
 
     // Registrar movimiento
     await createMovement({
+      negocioId: user?.negocioId,
       productoId: product.id,
       tipo: formData.tipo,
       cantidad: formData.cantidad,

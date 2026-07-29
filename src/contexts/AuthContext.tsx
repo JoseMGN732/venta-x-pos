@@ -10,6 +10,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+
   login: (
     username: string,
     password: string
@@ -17,8 +18,14 @@ interface AuthContextType {
     success: boolean;
     message?: string;
   }>;
+
   logout: () => void;
+
   loading: boolean;
+
+  isAuthenticated: boolean;
+
+  role?: string;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -63,7 +70,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         body: JSON.stringify({
           username,
           password,
-          uuid: "POS-PRINCIPAL",
         }),
       });
 

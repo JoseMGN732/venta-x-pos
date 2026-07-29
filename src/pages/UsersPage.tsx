@@ -38,7 +38,7 @@ const UsersPage = () => {
   const [formData, setFormData] = useState<Partial<User>>({
     username: '',
     nombre: '',
-    rol: 'Cajero',
+    rol: "CAJERO",
     password: ''
   });
 
@@ -61,10 +61,7 @@ const UsersPage = () => {
 
                 nombre: u.nombre,
 
-                rol:
-                    u.rol === "ADMINISTRADOR"
-                        ? "Administrador"
-                        : "Cajero",
+                rol: u.rol,
 
                 password: "",
 
@@ -88,7 +85,7 @@ const UsersPage = () => {
       setFormData({
         username: '',
         nombre: '',
-        rol: 'Cajero',
+        rol: "CAJERO",
         password: ''
       });
     }
@@ -110,10 +107,7 @@ const UsersPage = () => {
         const body: any = {
           nombre: formData.nombre,
           usuario: formData.username,
-          rol:
-              formData.rol === "Administrador"
-                  ? "ADMINISTRADOR"
-                  : "CAJERO",
+          rol: formData.rol,
           activo: editingUser.activo
         };
 
@@ -135,10 +129,7 @@ const UsersPage = () => {
 
             password: formData.password,
 
-            rol:
-                formData.rol === "Administrador"
-                    ? "ADMINISTRADOR"
-                    : "CAJERO"
+            rol: formData.rol,
 
         });
 
@@ -149,7 +140,7 @@ const UsersPage = () => {
     setFormData({
         username: "",
         nombre: "",
-        rol: "Cajero",
+        rol: "CAJERO",
         password: ""
     });
 
@@ -208,12 +199,12 @@ const UsersPage = () => {
                 <TableCell>{user.username}</TableCell>
                 <TableCell>
                   <div className="flex items-center gap-1.5">
-                    {user.rol === 'Administrador' ? (
+                    {user.rol === "ADMINISTRADOR" ? (
                       <Shield className="h-4 w-4 text-blue-600" />
                     ) : (
                       <UserIcon className="h-4 w-4 text-slate-500" />
                     )}
-                    <span className={user.rol === 'Administrador' ? 'text-blue-600 font-medium' : ''}>
+                    <span className={user.rol === "ADMINISTRADOR" ? "text-blue-600 font-medium" : ""}>
                       {user.rol}
                     </span>
                   </div>
@@ -290,8 +281,14 @@ const UsersPage = () => {
                 <label className="text-sm font-medium">Rol</label>
                 <Select 
                   options={[
-                    { label: 'Administrador', value: 'Administrador' },
-                    { label: 'Cajero', value: 'Cajero' }
+                    {
+                        label: "Administrador",
+                        value: "ADMINISTRADOR"
+                    },
+                    {
+                        label: "Cajero",
+                        value: "CAJERO"
+                    }
                   ]}
                   value={formData.rol}
                   onChange={(e) => setFormData({...formData, rol: e.target.value as Role})}
@@ -319,7 +316,7 @@ const UsersPage = () => {
                   setFormData({
                       username: "",
                       nombre: "",
-                      rol: "Cajero",
+                      rol: "CAJERO",
                       password: ""
                   });
               }}

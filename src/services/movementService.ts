@@ -1,7 +1,7 @@
 const API = "http://localhost:3001/api/movements";
 
-export const getMovements = async () => {
-    const res = await fetch(API);
+export const getMovements = async (negocioId: number) => {
+    const res = await fetch(`${API}?negocioId=${negocioId}`);
     return await res.json();
 };
 
