@@ -8,7 +8,6 @@
     { "path": "/punto-de-venta", "src": "src/pages/POSPage.tsx" },
     { "path": "/ventas", "src": "src/pages/SalesPage.tsx" },
     { "path": "/usuarios", "src": "src/pages/UsersPage.tsx" },
-    { "path": "/negocios", "src": "src/pages/BusinessesPage.tsx" },
     { "path": "/configuracion", "src": "src/pages/SettingsPage.tsx" },
     { "path": "/stock", "src": "src/pages/StockPage.tsx" }
   ],

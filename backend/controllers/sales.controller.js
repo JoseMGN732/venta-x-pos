@@ -87,15 +87,42 @@ export const createSale = (req, res) => {
 
         const now = new Date();
 
+        const fecha =
+            now.getFullYear() +
+            "-" +
+            String(now.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(now.getDate()).padStart(2, "0");
+
+        let ganancia = 0;
+
+        items.forEach(item => {
+
+            const product = products.find(
+                p => Number(p.id) === Number(item.productId)
+            );
+
+            if (!product) return;
+
+            // Lo que ganas por una unidad
+            const utilidad = product.precioVenta - product.precioCompra;
+
+            // Ganancia total de ese producto
+            ganancia += utilidad * item.cantidad;
+
+        });
+
         const sale = {
 
             id: "SALE-" + Date.now(),
 
             negocioId,
 
-            fecha: now.toISOString().split("T")[0],
+            fecha,
 
-            hora: now.toLocaleTimeString("es-MX"),
+            hora: now.toLocaleTimeString("es-MX", {
+                hour12: false
+            }),
 
             items,
 
@@ -104,6 +131,8 @@ export const createSale = (req, res) => {
             impuesto,
 
             total,
+
+            ganancia,
 
             metodoPago,
 

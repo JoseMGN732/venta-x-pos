@@ -14,10 +14,30 @@ import { Button } from '../components/ui/button';
 import { Product, Sale } from '../types';
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../services/productService";
+import { getSales } from "../services/saleService";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip
+} from "recharts";
 
 const DashboardPage = () => {
   const { data } = useBusiness();
   const [products, setProducts] = useState<Product[]>([]);
+  const [sales, setSales] = useState<Sale[]>([]);
+
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+
   const { user } = useAuth();
   const location = useLocation();
   const isAdmin = user?.rol?.toUpperCase() === 'ADMINISTRADOR';
@@ -25,17 +45,19 @@ const DashboardPage = () => {
   const totalProducts = products.length;
   const lowStockProducts = products.filter(p => p.stock <= 5).length;
   
-  const today = new Date().toISOString().split('T')[0];
-  const salesToday = data.sales.filter(s => s.fecha === today);
+  const today = formatDate(new Date());
+
+  const salesToday = sales.filter(s => s.fecha === today);
   const totalSalesToday = salesToday.reduce((acc, s) => acc + s.total, 0);
   
   const currentMonth = today.substring(0, 7);
-  const salesMonth = data.sales.filter(s => s.fecha.startsWith(currentMonth));
+  const salesMonth = sales.filter(s => s.fecha.startsWith(currentMonth));
   const totalSalesMonth = salesMonth.reduce((acc, s) => acc + s.total, 0);
 
   useEffect(() => {
 
     loadProducts();
+    loadSales();
 
   }, [location.pathname]);
 
@@ -43,7 +65,34 @@ const DashboardPage = () => {
 
     const response = await getProducts();
 
-    setProducts(response.products);
+    const usuario = JSON.parse(
+        localStorage.getItem("user") || "{}"
+    );
+
+    const productosFiltrados = response.products.filter(
+        p => Number(p.negocioId) === Number(usuario.negocioId)
+    );
+
+    setProducts(productosFiltrados);
+
+  };
+
+  const loadSales = async () => {
+
+    const response = await getSales();
+
+    if (response.success) {
+
+        const usuario = JSON.parse(
+            localStorage.getItem("user") || "{}"
+        );
+
+        const ventasFiltradas = response.sales.filter(
+            sale => Number(sale.negocioId) === Number(usuario.negocioId)
+        );
+
+        setSales(ventasFiltradas);
+    }
 
   };
 
@@ -51,7 +100,10 @@ const DashboardPage = () => {
   const totalTicketsToday = salesToday.length;
 
   // Ganancia del mes (por ahora igual a ventas)
-  const totalProfitMonth = totalSalesMonth;
+  const totalProfitMonth = salesMonth.reduce(
+    (total, sale) => total + (sale.ganancia || 0),
+    0
+  );
 
   // ===== Ventas últimos 7 días =====
   const salesLast7Days = [];
@@ -62,7 +114,7 @@ const DashboardPage = () => {
 
         let vendidos = 0;
 
-        data.sales.forEach(sale => {
+        sales.forEach(sale => {
             sale.items.forEach(item => {
                 if (item.productId == product.id) {
                     vendidos += item.cantidad;
@@ -94,15 +146,16 @@ const DashboardPage = () => {
     const date = new Date();
     date.setDate(date.getDate() - i);
 
-    const day = date.toISOString().split("T")[0];
+    const day = formatDate(date);
 
-    const total = data.sales
+    const total = sales
       .filter(sale => sale.fecha === day)
       .reduce((sum, sale) => sum + sale.total, 0);
 
     salesLast7Days.push({
       label: date.toLocaleDateString("es-MX", {
-        weekday: "short"
+          day: "2-digit",
+          month: "2-digit"
       }),
       total
     });
@@ -206,7 +259,7 @@ const DashboardPage = () => {
           </span>
 
           <span>
-              <strong>Ventas:</strong> {data.sales.length}
+              <strong>Ventas:</strong> {sales.length}
           </span>
 
           <span>
@@ -240,36 +293,51 @@ const DashboardPage = () => {
           <CardHeader>
             <CardTitle>Tendencia de Ventas (Últimos 7 días)</CardTitle>
           </CardHeader>
-          <CardContent className="h-[300px] flex items-end justify-between gap-2 px-6">
-            {/* Simple SVG Chart simulation */}
-            {salesLast7Days.map((day, i) => {
+          <CardContent className="h-[350px]">
 
-              const height = (day.total / maxSale) * 100;
+              <ResponsiveContainer
+                  width="100%"
+                  height="100%"
+              >
 
-              return (
+                  <BarChart
+                      data={salesLast7Days}
+                      margin={{
+                          top: 20,
+                          right: 20,
+                          left: 10,
+                          bottom: 10
+                      }}
+                  >
 
-                <div
-                  key={i}
-                  className="flex flex-col items-center gap-2 flex-1"
-                >
+                      <CartesianGrid
+                          strokeDasharray="3 3"
+                          vertical={false}
+                      />
 
-                  <div
-                    className="w-full bg-blue-600 rounded-t-md transition-all hover:bg-blue-700"
-                    style={{
-                      height: `${height}%`,
-                      minHeight: "6px"
-                    }}
-                  />
+                      <XAxis
+                          dataKey="label"
+                      />
 
-                  <span className="text-[10px] text-slate-500">
-                    {day.label}
-                  </span>
+                      <YAxis />
 
-                </div>
+                      <Tooltip
+                          formatter={(value:number)=>[
+                              `${data.config.moneda} ${value.toFixed(2)}`,
+                              "Ventas"
+                          ]}
+                      />
 
-              );
+                      <Bar
+                          dataKey="total"
+                          radius={[8,8,0,0]}
+                          fill="#2563eb"
+                      />
 
-            })}
+                  </BarChart>
+
+              </ResponsiveContainer>
+
           </CardContent>
         </Card>
 
@@ -279,7 +347,7 @@ const DashboardPage = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {data.sales.slice(-5).reverse().map((sale) => (
+              {sales.slice(-5).reverse().map((sale) => (
                 <div key={sale.id} className="flex items-center justify-between border-b pb-2 last:border-0">
                   <div className="flex flex-col">
                     <span className="text-sm font-medium">{getCantidadArticulos(sale)} artículos</span>
@@ -290,11 +358,11 @@ const DashboardPage = () => {
                   </span>
                 </div>
               ))}
-              {data.sales.length === 0 && (
+              {sales.length === 0 && (
                 <p className="text-sm text-slate-500 text-center py-4">No hay ventas registradas hoy.</p>
               )}
             </div>
-            {data.sales.length > 0 && (
+            {sales.length > 0 && (
               <Button asChild variant="link" className="w-full mt-4 text-blue-600">
                 <Link to="/ventas">Ver todas las ventas</Link>
               </Button>

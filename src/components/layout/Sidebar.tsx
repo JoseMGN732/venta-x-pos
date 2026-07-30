@@ -9,7 +9,6 @@ import {
   ArrowLeftRight,
   ShoppingCart,
   Users,
-  Building2,
   Settings,
   Search,
   LogOut
@@ -28,7 +27,6 @@ const Sidebar = () => {
     { name: 'Movimientos', path: '/movimientos', icon: ArrowLeftRight },
     { name: 'Ventas', path: '/ventas', icon: ShoppingCart },
     { name: 'Usuarios', path: '/usuarios', icon: Users },
-    { name: 'Negocios', path: '/negocios', icon: Building2 },
     { name: 'Configuración', path: '/configuracion', icon: Settings },
   ];
 

@@ -52,5 +52,102 @@
     "total": 54.52,
     "metodoPago": "Efectivo",
     "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1785343790801",
+    "negocioId": 1,
+    "fecha": "2026-07-29",
+    "hora": "10:49:50 a.m.",
+    "items": [
+      {
+        "productId": 1785290733758,
+        "nombre": "Sabritas",
+        "cantidad": 1,
+        "precioUnitario": 20,
+        "subtotal": 20
+      },
+      {
+        "productId": 1785291139880,
+        "nombre": "Crema",
+        "cantidad": 1,
+        "precioUnitario": 25,
+        "subtotal": 25
+      }
+    ],
+    "subtotal": 45,
+    "impuesto": 7.2,
+    "total": 52.2,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1785385082946",
+    "negocioId": 1,
+    "fecha": "2026-07-29",
+    "hora": "22:18:02",
+    "items": [
+      {
+        "productId": 1785290733758,
+        "nombre": "Sabritas",
+        "cantidad": 1,
+        "precioUnitario": 20,
+        "subtotal": 20
+      },
+      {
+        "productId": 1785290967489,
+        "nombre": "Coca Cola 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      },
+      {
+        "productId": 1785291139880,
+        "nombre": "Crema",
+        "cantidad": 1,
+        "precioUnitario": 25,
+        "subtotal": 25
+      }
+    ],
+    "subtotal": 67,
+    "impuesto": 10.72,
+    "total": 77.72,
+    "ganancia": 13,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1785429994112",
+    "negocioId": 1,
+    "fecha": "2026-07-30",
+    "hora": "10:46:34",
+    "items": [
+      {
+        "productId": 1785290733758,
+        "nombre": "Sabritas",
+        "cantidad": 1,
+        "precioUnitario": 20,
+        "subtotal": 20
+      },
+      {
+        "productId": 1785290967489,
+        "nombre": "Coca Cola 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      },
+      {
+        "productId": 1785291139880,
+        "nombre": "Crema",
+        "cantidad": 1,
+        "precioUnitario": 25,
+        "subtotal": 25
+      }
+    ],
+    "subtotal": 67,
+    "impuesto": 10.72,
+    "total": 77.72,
+    "ganancia": 13,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
   }
 ]

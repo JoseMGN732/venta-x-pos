@@ -1,17 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBusiness } from '../contexts/BusinessContext';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Building2, Save, MapPin, Phone, Mail, Hash } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { getBusiness, updateBusiness } from '../services/businessService';
 
 const SettingsPage = () => {
   const { data, updateConfig } = useBusiness();
+  const { user } = useAuth();
+
   const [formData, setFormData] = useState(data.config);
 
-  const handleSave = () => {
+  const [business, setBusiness] = useState({
+      nombre_negocio:"",
+      telefono:"",
+      correo:""
+  });
+
+  useEffect(()=>{
+
+    const loadBusiness = async()=>{
+
+        if(!user) return;
+
+        const response = await getBusiness(
+            user.negocioId
+        );
+
+        if(response.success){
+
+            setBusiness(response.business);
+
+        }
+
+    };
+
+
+    loadBusiness();
+
+
+  },[user]);
+
+  const handleSave = async()=>{
+
+
+    await updateBusiness(
+        user!.negocioId,
+        {
+            nombre_negocio: business.nombre_negocio,
+            telefono: business.telefono,
+            correo: business.correo
+        }
+    );
+
+
     updateConfig(formData);
-    alert('Configuración guardada correctamente.');
+
+
+    alert(
+      "Configuración guardada correctamente."
+    );
+
   };
 
   return (
@@ -36,37 +87,14 @@ const SettingsPage = () => {
                   <Building2 className="h-4 w-4 text-slate-400" /> Nombre Comercial
                 </label>
                 <Input 
-                  value={formData.info.nombre}
-                  onChange={(e) => setFormData({
-                    ...formData, 
-                    info: { ...formData.info, nombre: e.target.value }
-                  })}
+                  value={business.nombre_negocio}
+                  disabled
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium flex items-center gap-2">
-                  <Hash className="h-4 w-4 text-slate-400" /> RUC / NIT
-                </label>
-                <Input 
-                  value={formData.info.ruc}
-                  onChange={(e) => setFormData({
-                    ...formData, 
-                    info: { ...formData.info, ruc: e.target.value }
-                  })}
-                />
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-slate-400" /> Dirección
-              </label>
-              <Input 
-                value={formData.info.direccion}
-                onChange={(e) => setFormData({
-                  ...formData, 
-                  info: { ...formData.info, direccion: e.target.value }
-                })}
-              />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -74,11 +102,8 @@ const SettingsPage = () => {
                   <Phone className="h-4 w-4 text-slate-400" /> Teléfono
                 </label>
                 <Input 
-                  value={formData.info.telefono}
-                  onChange={(e) => setFormData({
-                    ...formData, 
-                    info: { ...formData.info, telefono: e.target.value }
-                  })}
+                  value={business.telefono}
+                  disabled
                 />
               </div>
               <div className="space-y-2">
@@ -87,11 +112,8 @@ const SettingsPage = () => {
                 </label>
                 <Input 
                   type="email"
-                  value={formData.info.email}
-                  onChange={(e) => setFormData({
-                    ...formData, 
-                    info: { ...formData.info, email: e.target.value }
-                  })}
+                  value={business.correo}
+                  disabled
                 />
               </div>
             </div>

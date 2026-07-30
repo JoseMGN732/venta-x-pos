@@ -47,7 +47,16 @@ const MovementsPage = () => {
 
   const loadProducts = async () => {
     const response = await getProducts();
-    setProducts(response.products);
+
+    const usuario = JSON.parse(
+        localStorage.getItem("user") || "{}"
+    );
+
+    const productosFiltrados = response.products.filter(
+        p => Number(p.negocioId) === Number(usuario.negocioId)
+    );
+
+    setProducts(productosFiltrados);
   };
 
   const loadMovements = async () => {
@@ -57,7 +66,15 @@ const MovementsPage = () => {
     const response = await getMovements(user.negocioId);
 
     if (response.success) {
-        setMovements(response.movements);
+        const usuario = JSON.parse(
+            localStorage.getItem("user") || "{}"
+        );
+
+        const movimientosFiltrados = response.movements.filter(
+            m => Number(m.negocioId) === Number(usuario.negocioId)
+        );
+
+        setMovements(movimientosFiltrados);
     }
 
   };

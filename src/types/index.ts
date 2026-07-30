@@ -11,15 +11,18 @@ export interface User {
 }
 
 export interface Product {
-  id: string;
-  negocioId: string;
-  nombre: string;
-  categoria: string;
-  sku: string;
-  precioCompra: number;
-  precioVenta: number;
-  stock: number;
-  imagen?: string;
+    id: string;
+    negocioId: number;
+
+    nombre: string;
+    categoria: string;
+    sku: string;
+
+    precioCompra: number;
+    precioVenta: number;
+
+    stock: number;
+    imagen?: string;
 }
 
 export interface SaleItem {
@@ -31,7 +34,7 @@ export interface SaleItem {
 }
 
 export interface Sale {
-  id: number;
+  id: string | number;
   fecha: string;
   hora: string;
   negocioId: number;
@@ -39,6 +42,9 @@ export interface Sale {
   subtotal: number;
   impuesto: number;
   total: number;
+
+  ganancia: number;
+
   metodoPago: string;
   cajero: string;
 }

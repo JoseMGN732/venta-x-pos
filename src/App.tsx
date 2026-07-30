@@ -9,7 +9,6 @@ import MovementsPage from './pages/MovementsPage';
 import POSPage from './pages/POSPage';
 import SalesPage from './pages/SalesPage';
 import UsersPage from './pages/UsersPage';
-import BusinessesPage from './pages/BusinessesPage';
 import SettingsPage from './pages/SettingsPage';
 import StockPage from './pages/StockPage';
 import { useAuth } from './contexts/AuthContext';
@@ -88,12 +87,6 @@ function App() {
         <Route path="usuarios" element={
           <ProtectedRoute roles={['ADMINISTRADOR']}>
             <UsersPage />
-          </ProtectedRoute>
-        } />
-        
-        <Route path="negocios" element={
-          <ProtectedRoute roles={['ADMINISTRADOR']}>
-            <BusinessesPage />
           </ProtectedRoute>
         } />
         

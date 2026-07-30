@@ -21,8 +21,6 @@ const LoginPage = () => {
     
     const result = await login(username, password);
 
-    console.log("Resultado del login:", result);
-
     if (result.success) {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
 

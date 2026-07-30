@@ -116,11 +116,6 @@ const ProductsPage = () => {
 
     }
 
-    console.log({
-      ...formData,
-      negocioId: user?.negocioId
-    });
-
     await loadProducts();
 
     setIsModalOpen(false);

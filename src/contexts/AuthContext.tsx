@@ -84,9 +84,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       // 🔥 guardar sesión
       setUser(data.user);
-      localStorage.setItem("user", JSON.stringify(data.user));
 
-      console.log("Usuario recibido:", data.user);
+      localStorage.setItem(
+        "user",
+        JSON.stringify(data.user)
+      );
+
+      window.dispatchEvent(new Event("userChanged"));
 
       return {
         success: true,
@@ -102,8 +106,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // 🚪 LOGOUT
   const logout = () => {
+
     setUser(null);
+
     localStorage.removeItem("user");
+
+    window.dispatchEvent(new Event("userChanged"));
+
   };
 
   return (

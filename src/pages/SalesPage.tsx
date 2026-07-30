@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBusiness } from '../contexts/BusinessContext';
 import { 
   Table, 
@@ -14,13 +14,17 @@ import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card'
 import { Search, Eye, Download, Calendar, Filter } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { Sale } from '../types';
-import { useEffect } from "react";
 import { getSales } from "../services/saleService";
+import * as XLSX from "xlsx";
 
 const SalesPage = () => {
   const { data } = useBusiness();
   const [sales, setSales] = useState<Sale[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [paymentFilter, setPaymentFilter] = useState("Todos");
+  const [cashierFilter, setCashierFilter] = useState("Todos");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [selectedSale, setSelectedSale] = useState<Sale | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -33,26 +37,97 @@ const SalesPage = () => {
 
       const response = await getSales();
 
-      console.log(response.sales);
+      const usuario = JSON.parse(
+          localStorage.getItem("user") || "{}"
+      );
 
-      console.log("VENTAS BACKEND:", response);
+      const ventasFiltradas = response.sales.filter(
+          sale => Number(sale.negocioId) === Number(usuario.negocioId)
+      );
 
-      if(response.success){
-          setSales(response.sales);
-      }
+      setSales(ventasFiltradas);
 
   };
 
-  const filteredSales = sales.filter(s => 
-    String(s.id).includes(searchTerm) ||
-    s.cajero.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    s.fecha.includes(searchTerm)
-  ).reverse();
+  const filteredSales = sales.filter(s => {
+
+    const searchMatch =
+        String(s.id).includes(searchTerm) ||
+        s.cajero.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.fecha.includes(searchTerm);
+
+    const paymentMatch =
+        paymentFilter === "Todos" ||
+        s.metodoPago === paymentFilter;
+
+
+    const cashierMatch =
+        cashierFilter === "Todos" ||
+        s.cajero === cashierFilter;
+
+    const saleDate = new Date(s.fecha);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate + "T23:59:59") : null;
+
+
+    const dateMatch =
+        (!start || saleDate >= start) &&
+        (!end || saleDate <= end);
+
+    return searchMatch && paymentMatch && cashierMatch && dateMatch;
+
+  }).reverse();
 
   const handleViewDetails = (sale: Sale) => {
     setSelectedSale(sale);
     setIsModalOpen(true);
   };
+
+  const cashiers = [
+    "Todos",
+    ...Array.from(
+        new Set(
+            sales.map(s => s.cajero)
+        )
+    )
+  ];
+
+  const exportExcel = () => {
+
+    const dataExcel = filteredSales.map((sale)=>({
+
+      ID: sale.id,
+      Fecha: sale.fecha,
+      Hora: sale.hora,
+      Cajero: sale.cajero,
+      MetodoPago: sale.metodoPago,
+      Productos: sale.items.length,
+      Subtotal: sale.subtotal,
+      Impuesto: sale.impuesto,
+      Total: sale.total
+
+    }));
+
+
+    const worksheet = XLSX.utils.json_to_sheet(dataExcel);
+
+
+    const workbook = XLSX.utils.book_new();
+
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      "Ventas"
+    );
+
+
+    XLSX.writeFile(
+      workbook,
+      "Reporte_Ventas.xlsx"
+    );
+
+};
 
   return (
     <div className="space-y-6">
@@ -61,7 +136,10 @@ const SalesPage = () => {
           <h1 className="text-3xl font-bold text-slate-900">Reporte de Ventas</h1>
           <p className="text-slate-500">Historial completo de todas las transacciones realizadas.</p>
         </div>
-        <Button variant="outline">
+        <Button 
+          variant="outline"
+          onClick={exportExcel}
+        >
           <Download className="mr-2 h-4 w-4" /> Exportar Excel
         </Button>
       </div>
@@ -114,12 +192,68 @@ const SalesPage = () => {
           />
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" /> Rango de Fechas
-          </Button>
-          <Button variant="outline" size="sm" className="flex items-center gap-2">
-            <Filter className="h-4 w-4" /> Más Filtros
-          </Button>
+          <select
+            className="border rounded-md px-3 py-2 text-sm"
+            value={cashierFilter}
+            onChange={(e)=>setCashierFilter(e.target.value)}
+            >
+
+            {
+            cashiers.map(c => (
+            <option key={c}>
+            {c}
+            </option>
+            ))
+            }
+
+            </select>
+
+
+            <select
+            className="border rounded-md px-3 py-2 text-sm"
+            value={paymentFilter}
+            onChange={(e)=>setPaymentFilter(e.target.value)}
+            >
+
+            <option>Todos</option>
+            <option>Efectivo</option>
+            <option>Tarjeta</option>
+            <option>Transferencia</option>
+
+          </select>
+          <div className="flex gap-2 items-center">
+
+            <input
+            type="date"
+            className="border rounded-md px-2 py-1 text-sm"
+            value={startDate}
+            onChange={(e)=>setStartDate(e.target.value)}
+            />
+
+
+            <input
+            type="date"
+            className="border rounded-md px-2 py-1 text-sm"
+            value={endDate}
+            onChange={(e)=>setEndDate(e.target.value)}
+            />
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={()=>{
+                  setSearchTerm("");
+                  setPaymentFilter("Todos");
+                  setCashierFilter("Todos");
+                  setStartDate("");
+                  setEndDate("");
+              }}
+              >
+              Limpiar
+            </Button>
+
+
+          </div>
         </div>
       </div>
 

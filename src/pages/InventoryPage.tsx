@@ -27,9 +27,17 @@ const InventoryPage = () => {
 
   const loadProducts = async () => {
 
-      const response = await getProducts();
+    const response = await getProducts();
 
-      setProducts(response.products);
+    const usuario = JSON.parse(
+        localStorage.getItem("user") || "{}"
+    );
+
+    const productosFiltrados = response.products.filter(
+        p => Number(p.negocioId) === Number(usuario.negocioId)
+    );
+
+    setProducts(productosFiltrados);
 
   };
 
