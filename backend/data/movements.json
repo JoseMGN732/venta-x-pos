@@ -68,5 +68,47 @@
     "usuario": "Administrador",
     "fecha": "2026-08-10",
     "hora": "19:15:19"
+  },
+  {
+    "id": "1786984003758-1786410822837",
+    "negocioId": 1,
+    "productoId": "1786410822837",
+    "producto": "Galletas Maria Gamesa",
+    "tipo": "salida",
+    "cantidad": 10,
+    "stockAnterior": 200,
+    "stockNuevo": 190,
+    "motivo": "Venta",
+    "usuario": "Jose Manuel",
+    "fecha": "2026-08-17",
+    "hora": "10:26:43"
+  },
+  {
+    "id": "1786984003849-1785290967489",
+    "negocioId": 1,
+    "productoId": 1785290967489,
+    "producto": "Coca Cola 600 ml",
+    "tipo": "salida",
+    "cantidad": 1,
+    "stockAnterior": 14,
+    "stockNuevo": 13,
+    "motivo": "Venta",
+    "usuario": "Jose Manuel",
+    "fecha": "2026-08-17",
+    "hora": "10:26:43"
+  },
+  {
+    "id": "1786988427811-1786410822837",
+    "negocioId": 1,
+    "productoId": "1786410822837",
+    "producto": "Galletas Maria Gamesa",
+    "tipo": "salida",
+    "cantidad": 10,
+    "stockAnterior": 190,
+    "stockNuevo": 180,
+    "motivo": "Venta",
+    "usuario": "Jose Manuel",
+    "fecha": "2026-08-17",
+    "hora": "11:40:27"
   }
 ]

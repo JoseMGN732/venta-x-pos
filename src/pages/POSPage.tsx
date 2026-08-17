@@ -173,6 +173,10 @@ const POSPage = () => {
 
   };
 
+  const handlePrintTicket = () => {
+    window.print();
+  };
+
   return (
     <div className="flex h-[calc(100vh-140px)] gap-6 overflow-hidden">
       {/* Product Selection Panel */}
@@ -343,7 +347,10 @@ const POSPage = () => {
             </DialogTitle>
           </DialogHeader>
           {lastSale && (
-            <div className="bg-white p-6 border rounded-lg shadow-inner font-mono text-sm space-y-4">
+            <div
+              id="ticket-print"
+              className="bg-white p-6 border rounded-lg shadow-inner font-mono text-sm space-y-4"
+            >
               <div className="text-center border-b pb-4">
                 <h3 className="font-bold text-lg uppercase">{data.config.info.nombre}</h3>
                 <p className="text-xs">{data.config.info.direccion}</p>
@@ -403,7 +410,10 @@ const POSPage = () => {
             <Button variant="outline" className="flex-1" onClick={() => setShowReceipt(false)}>
               Cerrar
             </Button>
-            <Button className="flex-1 bg-blue-600">
+            <Button
+              className="flex-1 bg-blue-600"
+              onClick={handlePrintTicket}
+            >
               <Printer className="mr-2 h-4 w-4" /> Imprimir
             </Button>
           </div>

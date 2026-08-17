@@ -268,5 +268,54 @@
     "ganancia": 5,
     "metodoPago": "Efectivo",
     "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1786984003852",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "10:26:43",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 10,
+        "precioUnitario": 22,
+        "subtotal": 220
+      },
+      {
+        "productId": 1785290967489,
+        "nombre": "Coca Cola 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      }
+    ],
+    "subtotal": 242,
+    "impuesto": 38.72,
+    "total": 280.72,
+    "ganancia": 44,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1786988427897",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "11:40:27",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 10,
+        "precioUnitario": 22,
+        "subtotal": 220
+      }
+    ],
+    "subtotal": 220,
+    "impuesto": 35.2,
+    "total": 255.2,
+    "ganancia": 40,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
   }
 ]

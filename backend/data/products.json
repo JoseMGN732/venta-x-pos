@@ -16,7 +16,7 @@
     "sku": "SKU-2194",
     "precioCompra": 18,
     "precioVenta": 22,
-    "stock": 14,
+    "stock": 13,
     "negocioId": 1
   },
   {
@@ -46,7 +46,7 @@
     "sku": "SKU-1929",
     "precioCompra": 18,
     "precioVenta": 22,
-    "stock": 200,
+    "stock": 180,
     "negocioId": 1
   },
   {
