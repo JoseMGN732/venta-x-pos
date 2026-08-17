@@ -317,5 +317,89 @@
     "ganancia": 40,
     "metodoPago": "Efectivo",
     "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1786988931964",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "11:48:51",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 10,
+        "precioUnitario": 22,
+        "subtotal": 220
+      }
+    ],
+    "subtotal": 220,
+    "impuesto": 35.2,
+    "total": 255.2,
+    "ganancia": 40,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1786989134638",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "11:52:14",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 10,
+        "precioUnitario": 22,
+        "subtotal": 220
+      }
+    ],
+    "subtotal": 220,
+    "impuesto": 35.2,
+    "total": 255.2,
+    "ganancia": 40,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1786989328130",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "11:55:28",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 10,
+        "precioUnitario": 22,
+        "subtotal": 220
+      }
+    ],
+    "subtotal": 220,
+    "impuesto": 35.2,
+    "total": 255.2,
+    "ganancia": 40,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1786989492404",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "11:58:12",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 10,
+        "precioUnitario": 22,
+        "subtotal": 220
+      }
+    ],
+    "subtotal": 220,
+    "impuesto": 35.2,
+    "total": 255.2,
+    "ganancia": 40,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
   }
 ]

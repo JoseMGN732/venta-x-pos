@@ -110,5 +110,61 @@
     "usuario": "Jose Manuel",
     "fecha": "2026-08-17",
     "hora": "11:40:27"
+  },
+  {
+    "id": "1786988931943-1786410822837",
+    "negocioId": 1,
+    "productoId": "1786410822837",
+    "producto": "Galletas Maria Gamesa",
+    "tipo": "salida",
+    "cantidad": 10,
+    "stockAnterior": 180,
+    "stockNuevo": 170,
+    "motivo": "Venta",
+    "usuario": "Jose Manuel",
+    "fecha": "2026-08-17",
+    "hora": "11:48:51"
+  },
+  {
+    "id": "1786989134618-1786410822837",
+    "negocioId": 1,
+    "productoId": "1786410822837",
+    "producto": "Galletas Maria Gamesa",
+    "tipo": "salida",
+    "cantidad": 10,
+    "stockAnterior": 170,
+    "stockNuevo": 160,
+    "motivo": "Venta",
+    "usuario": "Jose Manuel",
+    "fecha": "2026-08-17",
+    "hora": "11:52:14"
+  },
+  {
+    "id": "1786989328111-1786410822837",
+    "negocioId": 1,
+    "productoId": "1786410822837",
+    "producto": "Galletas Maria Gamesa",
+    "tipo": "salida",
+    "cantidad": 10,
+    "stockAnterior": 160,
+    "stockNuevo": 150,
+    "motivo": "Venta",
+    "usuario": "Jose Manuel",
+    "fecha": "2026-08-17",
+    "hora": "11:55:28"
+  },
+  {
+    "id": "1786989492388-1786410822837",
+    "negocioId": 1,
+    "productoId": "1786410822837",
+    "producto": "Galletas Maria Gamesa",
+    "tipo": "salida",
+    "cantidad": 10,
+    "stockAnterior": 150,
+    "stockNuevo": 140,
+    "motivo": "Venta",
+    "usuario": "Jose Manuel",
+    "fecha": "2026-08-17",
+    "hora": "11:58:12"
   }
 ]

@@ -351,14 +351,25 @@ const POSPage = () => {
               id="ticket-print"
               className="bg-white p-6 border rounded-lg shadow-inner font-mono text-sm space-y-4"
             >
-              <div className="text-center border-b pb-4">
-                <h3 className="font-bold text-lg uppercase">{data.config.info.nombre}</h3>
-                <p className="text-xs">{data.config.info.direccion}</p>
-                <p className="text-xs">RUC: {data.config.info.ruc}</p>
-                <p className="text-xs">Tel: {data.config.info.telefono}</p>
+              <div className="text-center border-b pb-3">
+                <h3 className="font-bold text-base uppercase">
+                  {data.config.info.nombre}
+                </h3>
+
+                <p className="text-[10px]">
+                  {data.config.info.direccion}
+                </p>
+
+                <p className="text-[10px]">
+                  RUC: {data.config.info.ruc}
+                </p>
+
+                <p className="text-[10px]">
+                  Tel: {data.config.info.telefono}
+                </p>
               </div>
               
-              <div className="space-y-1 text-xs">
+              <div className="space-y-1 text-[10px] py-2">
                 <div className="flex justify-between">
                   <span>FECHA: {lastSale.fecha}</span>
                   <span>HORA: {lastSale.hora}</span>
@@ -368,32 +379,51 @@ const POSPage = () => {
               </div>
 
               <div className="border-t border-b py-2 space-y-1">
-                <div className="flex justify-between font-bold text-[10px] mb-1">
-                  <span className="w-1/2">PRODUCTO</span>
-                  <span className="w-1/6 text-right">CANT</span>
-                  <span className="w-1/3 text-right">TOTAL</span>
+                <div className="grid grid-cols-[1fr_40px_70px] font-bold text-[10px] mb-1">
+                  <span>PRODUCTO</span>
+                  <span className="text-center">CANT</span>
+                  <span className="text-right">TOTAL</span>
                 </div>
                 {lastSale.items.map((item, i) => (
-                  <div key={i} className="flex justify-between text-[10px]">
-                    <span className="w-1/2 truncate">{item.nombre}</span>
-                    <span className="w-1/6 text-right">{item.cantidad}</span>
-                    <span className="w-1/3 text-right">{data.config.moneda}{item.subtotal.toFixed(2)}</span>
+                  <div
+                    key={i}
+                    className="grid grid-cols-[1fr_40px_70px] text-[10px] items-center"
+                  >
+                    <span className="truncate pr-2">
+                      {item.nombre}
+                    </span>
+
+                    <span className="text-center">
+                      {item.cantidad}
+                    </span>
+
+                    <span className="text-right">
+                      {data.config.moneda}{item.subtotal.toFixed(2)}
+                    </span>
                   </div>
                 ))}
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-1 text-[11px]">
                 <div className="flex justify-between">
                   <span>SUBTOTAL:</span>
-                  <span>{data.config.moneda}{lastSale.subtotal.toFixed(2)}</span>
+                  <span>
+                    {data.config.moneda}{lastSale.subtotal.toFixed(2)}
+                  </span>
                 </div>
+
                 <div className="flex justify-between">
                   <span>IVA ({data.config.impuesto}%):</span>
-                  <span>{data.config.moneda}{lastSale.impuesto.toFixed(2)}</span>
+                  <span>
+                    {data.config.moneda}{lastSale.impuesto.toFixed(2)}
+                  </span>
                 </div>
-                <div className="flex justify-between font-bold text-lg pt-2 border-t">
+
+                <div className="flex justify-between font-bold text-base pt-2 mt-1 border-t border-black">
                   <span>TOTAL:</span>
-                  <span>{data.config.moneda}{lastSale.total.toFixed(2)}</span>
+                  <span>
+                    {data.config.moneda}{lastSale.total.toFixed(2)}
+                  </span>
                 </div>
               </div>
 
