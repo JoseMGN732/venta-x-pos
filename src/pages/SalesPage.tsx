@@ -11,7 +11,7 @@ import {
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
-import { Search, Eye, Download, Calendar, Filter } from 'lucide-react';
+import { Search, Eye, Download } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { Sale } from '../types';
 import { getSales } from "../services/saleService";
@@ -42,7 +42,7 @@ const SalesPage = () => {
       );
 
       const ventasFiltradas = response.sales.filter(
-          sale => Number(sale.negocioId) === Number(usuario.negocioId)
+          (sale: Sale) => Number(sale.negocioId) === Number(usuario.negocioId)
       );
 
       setSales(ventasFiltradas);

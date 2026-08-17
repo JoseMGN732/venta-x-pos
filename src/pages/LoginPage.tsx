@@ -4,7 +4,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '../components/ui/card';
-import { LogIn } from 'lucide-react';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -51,7 +50,7 @@ const LoginPage = () => {
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
             <img
-              src="../../public/pwa-192x192.png"
+              src="/pwa-192x192.png"
               alt="Venta X"
               className="w-52 h-52 object-contain mx-auto"
             />
@@ -99,11 +98,6 @@ const LoginPage = () => {
             </Button>
           </CardFooter>
         </form>
-        <div className="px-6 pb-6 text-center">
-          <p className="text-xs text-slate-500">
-            Demos: admin / admin123  |  cajero / cajero123
-          </p>
-        </div>
       </Card>
     </div>
   );

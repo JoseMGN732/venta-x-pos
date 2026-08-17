@@ -3,7 +3,7 @@ import { DEMO_PRODUCTS, DEMO_USERS, DEMO_CONFIG, DEFAULT_BUSINESS_ID } from './c
 
 const STORAGE_KEY_PREFIX = 'commercial_manager_';
 
-export const getBusinessData = (businessId: string): BusinessData => {
+export const getBusinessData = (businessId: number) => {
   const data = localStorage.getItem(`${STORAGE_KEY_PREFIX}${businessId}`);
   if (data) {
     return JSON.parse(data);
@@ -37,20 +37,20 @@ export const getBusinessData = (businessId: string): BusinessData => {
   };
 };
 
-export const saveBusinessData = (businessId: string, data: BusinessData) => {
+export const saveBusinessData = (businessId: number, data: BusinessData) => {
   localStorage.setItem(`${STORAGE_KEY_PREFIX}${businessId}`, JSON.stringify(data));
 };
 
-export const getAllBusinesses = (): string[] => {
+export const getBusinessIds = (): number[] => {
   const keys = Object.keys(localStorage);
   const businessIds = keys
     .filter(k => k.startsWith(STORAGE_KEY_PREFIX))
     .map(k => k.replace(STORAGE_KEY_PREFIX, ''));
   
   if (businessIds.length === 0) return [DEFAULT_BUSINESS_ID];
-  return businessIds;
+  return businessIds.map(Number);
 };
 
-export const deleteBusiness = (businessId: string) => {
+export const deleteBusiness = (businessId: number) => {
   localStorage.removeItem(`${STORAGE_KEY_PREFIX}${businessId}`);
 };

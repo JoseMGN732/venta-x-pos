@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { Product, Sale } from '../types';
+import { Product, Sale, SaleItem } from '../types';
 import React, { useEffect, useState } from "react";
 import { getProducts } from "../services/productService";
 import { getSales } from "../services/saleService";
@@ -70,7 +70,9 @@ const DashboardPage = () => {
     );
 
     const productosFiltrados = response.products.filter(
-        p => Number(p.negocioId) === Number(usuario.negocioId)
+      (p: Product) =>
+        Number(p.negocioId) === Number(usuario.negocioId)
+
     );
 
     setProducts(productosFiltrados);
@@ -88,7 +90,7 @@ const DashboardPage = () => {
         );
 
         const ventasFiltradas = response.sales.filter(
-            sale => Number(sale.negocioId) === Number(usuario.negocioId)
+            (sale: Sale) => Number(sale.negocioId) === Number(usuario.negocioId)
         );
 
         setSales(ventasFiltradas);
@@ -101,7 +103,7 @@ const DashboardPage = () => {
 
   // Ganancia del mes (por ahora igual a ventas)
   const totalProfitMonth = salesMonth.reduce(
-    (total, sale) => total + (sale.ganancia || 0),
+    (total, sale: Sale) => total + (sale.ganancia || 0),
     0
   );
 
@@ -114,8 +116,8 @@ const DashboardPage = () => {
 
         let vendidos = 0;
 
-        sales.forEach(sale => {
-            sale.items.forEach(item => {
+        sales.forEach((sale: Sale) => {
+            sale.items.forEach((item: SaleItem) => {
                 if (item.productId == product.id) {
                     vendidos += item.cantidad;
                 }
@@ -252,26 +254,6 @@ const DashboardPage = () => {
         <p className="text-slate-500">Resumen de operaciones de {data.config.info.nombre}</p>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-6 text-sm text-slate-600">
-
-          <span>
-              <strong>Productos:</strong> {products.length}
-          </span>
-
-          <span>
-              <strong>Ventas:</strong> {sales.length}
-          </span>
-
-          <span>
-              <strong>Usuarios:</strong> {data.users.length}
-          </span>
-
-          <span>
-              <strong>Negocio:</strong> {data.config.info.nombre}
-          </span>
-
-      </div>
-
       <div className="grid gap-6 md:grid-cols-3 xl:grid-cols-6">
         {stats.map((stat, i) => (
           <Card key={i}>
@@ -322,9 +304,9 @@ const DashboardPage = () => {
                       <YAxis />
 
                       <Tooltip
-                          formatter={(value:number)=>[
-                              `${data.config.moneda} ${value.toFixed(2)}`,
-                              "Ventas"
+                          formatter={(value: any) => [
+                            Number(value).toFixed(2),
+                            "Ventas"
                           ]}
                       />
 

@@ -3,7 +3,7 @@ import { useBusiness } from '../contexts/BusinessContext';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { Building2, Save, MapPin, Phone, Mail, Hash } from 'lucide-react';
+import { Building2, Save, Phone, Mail } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { getBusiness, updateBusiness } from '../services/businessService';
 

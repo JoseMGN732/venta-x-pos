@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useBusiness } from '../contexts/BusinessContext';
 import { Input } from '../components/ui/input';
 import { 
@@ -13,12 +13,53 @@ import { Badge } from '../components/ui/badge';
 import { Search, Package, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
+import { Product } from '../types';
+import { useAuth } from '../contexts/AuthContext';
+import { getProducts } from "../services/productService";
 
 const StockPage = () => {
   const { data } = useBusiness();
+  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
+  const [products,setProducts] = useState<Product[]>([]);
 
-  const filteredProducts = data.products.filter(p => 
+  useEffect(() => {
+
+    if (!user?.negocioId) return;
+
+    loadProducts();
+
+  }, [user?.negocioId]);
+
+  const loadProducts = async () => {
+
+    try {
+
+        const response = await getProducts();
+
+        if(response.success){
+
+            const productosFiltrados = response.products.filter(
+                (p: Product) =>
+                    Number(p.negocioId) === Number(user?.negocioId)
+            );
+
+            setProducts(productosFiltrados);
+
+        }
+
+    } catch(error){
+
+        console.error(
+          "Error cargando inventario",
+          error
+        );
+
+    }
+
+};  
+
+  const filteredProducts = products.filter(p => 
     p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) || 
     p.sku.toLowerCase().includes(searchTerm.toLowerCase())
   );

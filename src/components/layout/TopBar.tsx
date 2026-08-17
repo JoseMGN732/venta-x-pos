@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useBusiness } from '../../contexts/BusinessContext';
 import { Avatar, AvatarFallback } from '../ui/avatar';
@@ -6,11 +5,38 @@ import {
   Building2,
   User as UserIcon
 } from 'lucide-react';
+import { useEffect, useState } from "react";
 
 const TopBar = () => {
 
   const { user } = useAuth();
   const { data } = useBusiness();
+
+  const [refresh, setRefresh] = useState(false);
+
+
+  useEffect(() => {
+
+    const update = () => {
+      setRefresh(prev => !prev);
+    };
+
+
+    window.addEventListener(
+      "userChanged",
+      update
+    );
+
+
+    return () => {
+      window.removeEventListener(
+        "userChanged",
+        update
+      );
+    };
+
+
+  }, []);
 
   return (
     <header className="flex h-16 items-center justify-between border-b bg-white px-8 shadow-sm">

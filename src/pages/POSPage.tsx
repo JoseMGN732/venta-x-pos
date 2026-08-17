@@ -28,16 +28,46 @@ const POSPage = () => {
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [cart, setCart] = useState<SaleItem[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [paymentMethod, setPaymentMethod] = useState('Efectivo');
   const [showReceipt, setShowReceipt] = useState(false);
   const [lastSale, setLastSale] = useState<Sale | null>(null);
 
+  useEffect(() => {
+
+    if(!user?.negocioId) return;
+
+    loadProducts();
+
+  }, [user?.negocioId]);
+
+  const loadProducts = async () => {
+
+    if(!user?.negocioId) return;
+
+    const response = await getProducts();
+
+    if(response.success){
+
+        const productosFiltrados = response.products.filter(
+          (p: Product) =>
+          Number(p.negocioId) === Number(user?.negocioId)
+        );
+
+        setProducts(productosFiltrados);
+
+    }
+
+  };
+
   const filteredProducts = useMemo(() => {
-    return data.products.filter(p => 
-      p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      p.sku.toLowerCase().includes(searchTerm.toLowerCase())
+
+    return products.filter(p =>
+        p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.sku.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [data.products, searchTerm]);
+
+}, [products, searchTerm]);
 
   const addToCart = (product: Product) => {
     if (product.stock <= 0) {
@@ -68,7 +98,7 @@ const POSPage = () => {
   };
 
   const updateQuantity = (productId: string, delta: number) => {
-    const product = data.products.find(p => p.id === productId);
+    const product =   products.find(p => p.id === productId);
     if (!product) return;
 
     setCart(cart.map(item => {

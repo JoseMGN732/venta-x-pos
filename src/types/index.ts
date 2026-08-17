@@ -51,7 +51,7 @@ export interface Sale {
 
 export interface StockMovement {
   id: string;
-  negocioId: string;
+  negocioId: number;
   productoId: string;
   tipo: 'entrada' | 'salida';
   cantidad: number;
@@ -61,7 +61,7 @@ export interface StockMovement {
 }
 
 export interface Business {
-  id: string;
+  id: number;
   nombre: string;
   ruc: string;
   direccion: string;
@@ -70,7 +70,7 @@ export interface Business {
 }
 
 export interface BusinessConfig {
-  negocioId: string;
+  negocioId: number;
   info: Business;
   impuesto: number;
   moneda: string;

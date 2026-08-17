@@ -1,4 +1,5 @@
 import { getProducts, saveProducts } from "../utils/productsStorage.js";
+import { getMovements, saveMovements } from "../utils/movementsStorage.js";
 
 // Obtener todos los productos
 export const getAllProducts = (req, res) => {
@@ -17,31 +18,85 @@ export const getAllProducts = (req, res) => {
   }
 };
 
-// Crear producto
-export const createProduct = (req, res) => {
-  try {
-    const products = getProducts();
+  // Crear producto
+  // Crear producto
+  export const createProduct = (req, res) => {
+    try {
+      const products = getProducts();
 
-    const newProduct = {
-      id: Date.now(),
-      ...req.body,
-    };
+      const newProduct = {
+        id: Date.now().toString(),
+        ...req.body,
+      };
 
-    products.push(newProduct);
+      products.push(newProduct);
 
-    saveProducts(products);
+      // Guardar producto
+      saveProducts(products);
 
-    res.status(201).json({
-      success: true,
-      product: newProduct,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Error creando producto",
-    });
-  }
-};
+      // Registrar movimiento de stock inicial
+      const stockInicial = Number(newProduct.stock) || 0;
+
+      if (stockInicial > 0) {
+        const movements = getMovements();
+
+        const now = new Date();
+
+        const fecha =
+          now.getFullYear() +
+          "-" +
+          String(now.getMonth() + 1).padStart(2, "0") +
+          "-" +
+          String(now.getDate()).padStart(2, "0");
+
+        const movimiento = {
+          id: Date.now().toString() + "-INICIAL",
+
+          negocioId: newProduct.negocioId,
+
+          productoId: newProduct.id,
+
+          producto: newProduct.nombre,
+
+          tipo: "entrada",
+
+          cantidad: stockInicial,
+
+          stockAnterior: 0,
+
+          stockNuevo: stockInicial,
+
+          motivo: "Stock inicial",
+
+          usuario: req.body.usuario || "Administrador",
+
+          fecha,
+
+          hora: now.toLocaleTimeString("es-MX", {
+            hour12: false,
+          }),
+        };
+
+        movements.push(movimiento);
+
+        saveMovements(movements);
+      }
+
+      res.status(201).json({
+        success: true,
+        product: newProduct,
+      });
+
+    } catch (error) {
+
+      console.error("Error creando producto:", error);
+
+      res.status(500).json({
+        success: false,
+        message: "Error creando producto",
+      });
+    }
+  };
 
 // Actualizar producto
 export const updateProduct = (req, res) => {

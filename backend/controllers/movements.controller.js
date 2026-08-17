@@ -45,7 +45,7 @@ export const createMovement = (req, res) => {
         const products = getProducts();
 
         const product = products.find(
-            p => Number(p.id) === Number(productoId)
+            p => p.id == productoId
         );
 
         if (!product) {
@@ -89,7 +89,7 @@ export const createMovement = (req, res) => {
         const now = new Date();
 
         const movement = {
-            id: Date.now(),
+            id: Date.now().toString(),
             negocioId,
             productoId: product.id,
             producto: product.nombre,

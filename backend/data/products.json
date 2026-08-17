@@ -6,17 +6,17 @@
     "sku": "SKU-8978",
     "precioCompra": 16,
     "precioVenta": 20,
-    "stock": 15,
+    "stock": 16,
     "negocioId": 1
   },
   {
     "id": 1785290967489,
     "nombre": "Coca Cola 600 ml",
-    "categoria": "Bebidas",
+    "categoria": "Electrónicos",
     "sku": "SKU-2194",
     "precioCompra": 18,
     "precioVenta": 22,
-    "stock": 15,
+    "stock": 14,
     "negocioId": 1
   },
   {
@@ -26,7 +26,37 @@
     "sku": "SKU-4484",
     "precioCompra": 20,
     "precioVenta": 25,
-    "stock": 15,
+    "stock": 6,
+    "negocioId": 1
+  },
+  {
+    "id": "1785705631203",
+    "nombre": "Cerveza Corona lata 250 ml",
+    "categoria": "Bebidas",
+    "sku": "SKU-1127",
+    "precioCompra": 20,
+    "precioVenta": 25,
+    "stock": 14,
+    "negocioId": 1
+  },
+  {
+    "id": "1786410822837",
+    "nombre": "Galletas Maria Gamesa",
+    "categoria": "Alimentos",
+    "sku": "SKU-1929",
+    "precioCompra": 18,
+    "precioVenta": 22,
+    "stock": 200,
+    "negocioId": 1
+  },
+  {
+    "id": "1786410919256",
+    "nombre": "Jugo del Valle 600 ml",
+    "categoria": "Bebidas",
+    "sku": "SKU-4297",
+    "precioCompra": 15,
+    "precioVenta": 18,
+    "stock": 20,
     "negocioId": 1
   }
 ]

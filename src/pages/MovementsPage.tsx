@@ -48,15 +48,20 @@ const MovementsPage = () => {
   const loadProducts = async () => {
     const response = await getProducts();
 
-    const usuario = JSON.parse(
-        localStorage.getItem("user") || "{}"
-    );
+    if (response.success) {
 
-    const productosFiltrados = response.products.filter(
-        p => Number(p.negocioId) === Number(usuario.negocioId)
-    );
+        const usuario = JSON.parse(
+            localStorage.getItem("user") || "{}"
+        );
 
-    setProducts(productosFiltrados);
+        const productosFiltrados = response.products.filter(
+            (p: Product) =>
+                Number(p.negocioId) === Number(usuario.negocioId)
+        );
+
+        setProducts(productosFiltrados);
+
+    }
   };
 
   const loadMovements = async () => {
@@ -71,7 +76,7 @@ const MovementsPage = () => {
         );
 
         const movimientosFiltrados = response.movements.filter(
-            m => Number(m.negocioId) === Number(usuario.negocioId)
+            (m: StockMovement) => Number(m.negocioId) === Number(usuario.negocioId)
         );
 
         setMovements(movimientosFiltrados);
@@ -179,7 +184,7 @@ const MovementsPage = () => {
                 <TableCell className="text-slate-600 max-w-[200px] truncate">{m.motivo}</TableCell>
                 <TableCell className="text-xs">
                   {typeof m.usuario === "object"
-                    ? m.usuario.nombre
+                    ? m.usuario
                     : m.usuario}
                 </TableCell>
               </TableRow>

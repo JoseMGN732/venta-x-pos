@@ -6,19 +6,20 @@ import { getProducts } from "../services/productService";
 import { getBusiness } from "../services/businessService";
 
 interface BusinessContextType {
-  currentBusinessId: string;
+  currentBusinessId: number;
   data: BusinessData;
   updateProducts: (products: Product[]) => void;
   updateSales: (sales: Sale[]) => void;
   updateMovements: (movements: StockMovement[]) => void;
   updateUsers: (users: User[]) => void;
   updateConfig: (config: BusinessConfig) => void;
+  loadingBusiness:boolean;
 }
 
 const BusinessContext = createContext<BusinessContextType | undefined>(undefined);
 
 export const BusinessProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentBusinessId, setCurrentBusinessId] = useState<string>(() => {
+  const [currentBusinessId, setCurrentBusinessId] = useState<number>(() => {
     const user = localStorage.getItem("user");
     if (user) {
       const parsed = JSON.parse(user);
@@ -28,7 +29,26 @@ export const BusinessProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return DEFAULT_BUSINESS_ID;
   });
 
-  const [data, setData] = useState<BusinessData>(() => getBusinessData(currentBusinessId));
+  const [data, setData] = useState<BusinessData>({
+    products: [],
+    users: [],
+    sales: [],
+    movements: [],
+    config: {
+      negocioId: currentBusinessId,
+      info: {
+        id: currentBusinessId,
+        nombre: "",
+        ruc: "",
+        direccion: "",
+        telefono: "",
+        email: ""
+      },
+      impuesto: 16,
+      moneda: "$"
+    }
+  });
+  const [loadingBusiness, setLoadingBusiness] = useState(true);
 
   useEffect(() => {
 
@@ -53,17 +73,18 @@ export const BusinessProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           config:{
             ...prev.config,
 
-            info:{
-              ...prev.config.info,
+            negocioId: response.business.id_negocio,
 
+            info:{
+              id: response.business.id_negocio,
               nombre: response.business.nombre_negocio,
               telefono: response.business.telefono,
-              email: response.business.correo
-
+              email: response.business.correo,
+              ruc: "",
+              direccion: ""
             }
 
           }
-
         }));
 
       }
@@ -78,23 +99,77 @@ export const BusinessProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
 
-    const updateBusiness = () => {
+    const updateBusiness = async () => {
 
       const savedUser = localStorage.getItem("user");
 
-      if(savedUser){
+      if(!savedUser) return;
 
-        const parsed = JSON.parse(savedUser);
 
-        setCurrentBusinessId(parsed.negocioId);
+      const parsed = JSON.parse(savedUser);
 
-        const businessData = getBusinessData(
-          parsed.negocioId
+
+      setLoadingBusiness(true);
+
+
+      setCurrentBusinessId(parsed.negocioId);
+
+
+      const businessData = getBusinessData(
+        parsed.negocioId
+      );
+
+
+      setData(businessData);
+
+
+      try {
+
+        const response = await getBusiness(
+          Number(parsed.negocioId)
         );
 
-        setData(businessData);
+
+        if(response.success){
+
+          setData(prev => ({
+            ...prev,
+
+            config:{
+              ...prev.config,
+
+              info:{
+                ...prev.config.info,
+
+                nombre:
+                response.business.nombre_negocio,
+
+                telefono:
+                response.business.telefono,
+
+                email:
+                response.business.correo
+
+              }
+
+            }
+
+          }));
+
+        }
+
+
+      } catch(error){
+
+        console.error(
+          "Error cargando negocio",
+          error
+        );
 
       }
+
+
+      setLoadingBusiness(false);
 
     };
 
@@ -108,7 +183,7 @@ export const BusinessProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     );
 
 
-    return () => {
+    return ()=>{
 
       window.removeEventListener(
         "userChanged",
@@ -118,7 +193,7 @@ export const BusinessProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
 
 
-  }, []);
+  },[currentBusinessId]);
 
   useEffect(() => {
 
@@ -153,7 +228,7 @@ export const BusinessProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     loadProducts();
 
-  }, []);
+  }, [currentBusinessId]);
 
   const updateProducts = (products: Product[]) => {
     const newData = { ...data, products };
@@ -188,6 +263,7 @@ export const BusinessProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const value = useMemo(() => ({
     currentBusinessId,
     data,
+    loadingBusiness,
     updateProducts,
     updateSales,
     updateMovements,

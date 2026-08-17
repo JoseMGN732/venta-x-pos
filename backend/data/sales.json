@@ -149,5 +149,124 @@
     "ganancia": 13,
     "metodoPago": "Efectivo",
     "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1785445443756",
+    "negocioId": 1,
+    "fecha": "2026-07-30",
+    "hora": "15:04:03",
+    "items": [
+      {
+        "productId": 1785291139880,
+        "nombre": "Crema",
+        "cantidad": 3,
+        "precioUnitario": 255,
+        "subtotal": 765
+      },
+      {
+        "productId": 1785290967489,
+        "nombre": "Coca Cola 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      }
+    ],
+    "subtotal": 787,
+    "impuesto": 125.92,
+    "total": 912.92,
+    "ganancia": 709,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1785445478563",
+    "negocioId": 1,
+    "fecha": "2026-07-30",
+    "hora": "15:04:38",
+    "items": [
+      {
+        "productId": 1785290967489,
+        "nombre": "Coca Cola 600 ml",
+        "cantidad": 10,
+        "precioUnitario": 22,
+        "subtotal": 220
+      },
+      {
+        "productId": 1785291139880,
+        "nombre": "Crema",
+        "cantidad": 6,
+        "precioUnitario": 255,
+        "subtotal": 1530
+      }
+    ],
+    "subtotal": 1750,
+    "impuesto": 280,
+    "total": 2030,
+    "ganancia": 1450,
+    "metodoPago": "Transferencia",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1785546659923",
+    "negocioId": 1,
+    "fecha": "2026-07-31",
+    "hora": "19:10:59",
+    "items": [
+      {
+        "productId": 1785290733758,
+        "nombre": "Sabritas",
+        "cantidad": 1,
+        "precioUnitario": 20,
+        "subtotal": 20
+      }
+    ],
+    "subtotal": 20,
+    "impuesto": 3.2,
+    "total": 23.2,
+    "ganancia": 4,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1785704663915",
+    "negocioId": 1,
+    "fecha": "2026-08-02",
+    "hora": "15:04:23",
+    "items": [
+      {
+        "productId": 1785290733758,
+        "nombre": "Sabritas",
+        "cantidad": 1,
+        "precioUnitario": 20,
+        "subtotal": 20
+      }
+    ],
+    "subtotal": 20,
+    "impuesto": 3.2,
+    "total": 23.2,
+    "ganancia": 4,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1785705960547",
+    "negocioId": 1,
+    "fecha": "2026-08-02",
+    "hora": "15:26:00",
+    "items": [
+      {
+        "productId": "1785705631203",
+        "nombre": "Cerveza Corona lata 250 ml",
+        "cantidad": 1,
+        "precioUnitario": 25,
+        "subtotal": 25
+      }
+    ],
+    "subtotal": 25,
+    "impuesto": 4,
+    "total": 29,
+    "ganancia": 5,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
   }
 ]

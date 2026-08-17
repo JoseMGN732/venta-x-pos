@@ -14,30 +14,35 @@ import { Search, AlertTriangle, ArrowUpRight, ArrowDownRight } from 'lucide-reac
 import { useEffect, useState } from "react";
 import { getProducts } from "../services/productService";
 import { Product } from "../types";
+import { useAuth } from "../contexts/AuthContext";
 
 const InventoryPage = () => {
   const { data } = useBusiness();
+  const { user } = useAuth();
 
   const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
+
     loadProducts();
-  }, []);
+
+  }, [user]);
 
   const loadProducts = async () => {
 
     const response = await getProducts();
 
-    const usuario = JSON.parse(
-        localStorage.getItem("user") || "{}"
-    );
+    if(response.success){
 
-    const productosFiltrados = response.products.filter(
-        p => Number(p.negocioId) === Number(usuario.negocioId)
-    );
+        const productosFiltrados = response.products.filter(
+            (p: Product) =>
+            Number(p.negocioId) === Number(user?.negocioId)
+        );
 
-    setProducts(productosFiltrados);
+        setProducts(productosFiltrados);
+
+    }
 
   };
 

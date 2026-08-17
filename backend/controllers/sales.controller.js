@@ -1,5 +1,6 @@
 import { getSales, saveSales } from "../utils/salesStorage.js";
 import { getProducts, saveProducts } from "../utils/productsStorage.js";
+import { getMovements, saveMovements } from "../utils/movementsStorage.js";
 
 // Obtener ventas
 export const getAllSales = (req, res) => {
@@ -43,11 +44,20 @@ export const createSale = (req, res) => {
 
         const products = getProducts();
 
+        const now = new Date();
+
+        const fecha =
+            now.getFullYear() +
+            "-" +
+            String(now.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(now.getDate()).padStart(2, "0");
+
         // Verificar existencias
         for (const item of items) {
 
             const product = products.find(
-                p => Number(p.id) === Number(item.productId)
+                p => p.id == item.productId
             );
 
             if (!product) {
@@ -71,35 +81,66 @@ export const createSale = (req, res) => {
         }
 
         // Descontar inventario
+        const movements = getMovements();
+
         for (const item of items) {
 
             const product = products.find(
-                p => Number(p.id) === Number(item.productId)
+                p => p.id == item.productId
             );
 
+            const stockAnterior = product.stock;
+
+            // descontar inventario
             product.stock -= item.cantidad;
 
+            movements.push({
+
+                id: Date.now().toString() + "-" + product.id,
+
+                negocioId,
+
+                productoId: product.id,
+
+                producto: product.nombre,
+
+                tipo: "salida",
+
+                cantidad: item.cantidad,
+
+                stockAnterior,
+
+                stockNuevo: product.stock,
+
+                motivo: "Venta",
+
+                usuario: cajero,
+
+                fecha,
+
+                hora: now.toLocaleTimeString("es-MX", {
+                    hour12: false
+                })
+
+            });
+
         }
+
+        saveMovements(movements);
+        saveProducts(products);
+
+        saveMovements(movements);
 
         saveProducts(products);
 
         const sales = getSales();
-
-        const now = new Date();
-
-        const fecha =
-            now.getFullYear() +
-            "-" +
-            String(now.getMonth() + 1).padStart(2, "0") +
-            "-" +
-            String(now.getDate()).padStart(2, "0");
 
         let ganancia = 0;
 
         items.forEach(item => {
 
             const product = products.find(
-                p => Number(p.id) === Number(item.productId)
+                p => p.id == item.productId
             );
 
             if (!product) return;
