@@ -401,5 +401,124 @@
     "ganancia": 40,
     "metodoPago": "Efectivo",
     "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1786991571887",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "12:32:51",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 10,
+        "precioUnitario": 22,
+        "subtotal": 220
+      }
+    ],
+    "subtotal": 220,
+    "impuesto": 35.2,
+    "total": 255.2,
+    "ganancia": 40,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1786991828468",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "12:37:08",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 10,
+        "precioUnitario": 22,
+        "subtotal": 220
+      }
+    ],
+    "subtotal": 220,
+    "impuesto": 35.2,
+    "total": 255.2,
+    "ganancia": 40,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1786994591496",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "13:23:11",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 10,
+        "precioUnitario": 22,
+        "subtotal": 220
+      }
+    ],
+    "subtotal": 220,
+    "impuesto": 35.2,
+    "total": 255.2,
+    "ganancia": 40,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1786994818700",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "13:26:58",
+    "items": [
+      {
+        "productId": 1785290733758,
+        "nombre": "Sabritas",
+        "cantidad": 1,
+        "precioUnitario": 20,
+        "subtotal": 20
+      },
+      {
+        "productId": 1785290967489,
+        "nombre": "Coca Cola 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      },
+      {
+        "productId": 1785291139880,
+        "nombre": "Crema",
+        "cantidad": 1,
+        "precioUnitario": 25,
+        "subtotal": 25
+      },
+      {
+        "productId": "1785705631203",
+        "nombre": "Cerveza Corona lata 250 ml",
+        "cantidad": 1,
+        "precioUnitario": 25,
+        "subtotal": 25
+      },
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      },
+      {
+        "productId": "1786410919256",
+        "nombre": "Jugo del Valle 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 18,
+        "subtotal": 18
+      }
+    ],
+    "subtotal": 132,
+    "impuesto": 21.12,
+    "total": 153.12,
+    "ganancia": 25,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
   }
 ]

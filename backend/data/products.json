@@ -6,7 +6,7 @@
     "sku": "SKU-8978",
     "precioCompra": 16,
     "precioVenta": 20,
-    "stock": 16,
+    "stock": 15,
     "negocioId": 1
   },
   {
@@ -16,7 +16,7 @@
     "sku": "SKU-2194",
     "precioCompra": 18,
     "precioVenta": 22,
-    "stock": 13,
+    "stock": 12,
     "negocioId": 1
   },
   {
@@ -26,7 +26,7 @@
     "sku": "SKU-4484",
     "precioCompra": 20,
     "precioVenta": 25,
-    "stock": 6,
+    "stock": 5,
     "negocioId": 1
   },
   {
@@ -36,7 +36,7 @@
     "sku": "SKU-1127",
     "precioCompra": 20,
     "precioVenta": 25,
-    "stock": 14,
+    "stock": 13,
     "negocioId": 1
   },
   {
@@ -46,7 +46,7 @@
     "sku": "SKU-1929",
     "precioCompra": 18,
     "precioVenta": 22,
-    "stock": 140,
+    "stock": 109,
     "negocioId": 1
   },
   {
@@ -56,7 +56,7 @@
     "sku": "SKU-4297",
     "precioCompra": 15,
     "precioVenta": 18,
-    "stock": 20,
+    "stock": 19,
     "negocioId": 1
   }
 ]

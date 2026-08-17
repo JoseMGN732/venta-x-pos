@@ -174,6 +174,7 @@ const POSPage = () => {
   };
 
   const handlePrintTicket = () => {
+    // Impresión mediante el navegador
     window.print();
   };
 
@@ -349,27 +350,27 @@ const POSPage = () => {
           {lastSale && (
             <div
               id="ticket-print"
-              className="bg-white p-6 border rounded-lg shadow-inner font-mono text-sm space-y-4"
+              className="thermal-ticket bg-white p-3 border rounded-lg shadow-inner font-mono text-xs space-y-2"
             >
-              <div className="text-center border-b pb-3">
-                <h3 className="font-bold text-base uppercase">
+              <div className="text-center border-b pb-2">
+                <h3 className="font-bold text-sm uppercase">
                   {data.config.info.nombre}
                 </h3>
 
-                <p className="text-[10px]">
+                <p className="text-[9px]">
                   {data.config.info.direccion}
                 </p>
 
-                <p className="text-[10px]">
+                <p className="text-[9px]">
                   RUC: {data.config.info.ruc}
                 </p>
 
-                <p className="text-[10px]">
+                <p className="text-[9px]">
                   Tel: {data.config.info.telefono}
                 </p>
               </div>
               
-              <div className="space-y-1 text-[10px] py-2">
+              <div className="space-y-1 text-[9px] py-1">
                 <div className="flex justify-between">
                   <span>FECHA: {lastSale.fecha}</span>
                   <span>HORA: {lastSale.hora}</span>
@@ -379,7 +380,7 @@ const POSPage = () => {
               </div>
 
               <div className="border-t border-b py-2 space-y-1">
-                <div className="grid grid-cols-[1fr_40px_70px] font-bold text-[10px] mb-1">
+                <div className="grid grid-cols-[1fr_25px_55px] font-bold text-[10px] mb-1">
                   <span>PRODUCTO</span>
                   <span className="text-center">CANT</span>
                   <span className="text-right">TOTAL</span>
@@ -387,9 +388,9 @@ const POSPage = () => {
                 {lastSale.items.map((item, i) => (
                   <div
                     key={i}
-                    className="grid grid-cols-[1fr_40px_70px] text-[10px] items-center"
+                    className="grid grid-cols-[1fr_25px_55px] text-[9px] items-start"
                   >
-                    <span className="truncate pr-2">
+                    <span className="pr-1 break-words">
                       {item.nombre}
                     </span>
 
@@ -397,7 +398,7 @@ const POSPage = () => {
                       {item.cantidad}
                     </span>
 
-                    <span className="text-right">
+                    <span className="text-right whitespace-nowrap">
                       {data.config.moneda}{item.subtotal.toFixed(2)}
                     </span>
                   </div>
