@@ -8,8 +8,12 @@ import movementsRoutes from "./routes/movements.routes.js";
 import usersRoutes from "./routes/users.routes.js";
 import salesRoutes from "./routes/sales.routes.js";
 import businessRoutes from "./routes/business.routes.js";
-import { connectPrinter, printTest } from "./services/printer.service.js";
-
+import {
+  connectPrinter,
+  printTest,
+  printTicket,
+  disconnectPrinter
+} from "./services/printer.service.js";
 dotenv.config();
 
 const app = express();
@@ -58,12 +62,83 @@ app.get("/api/printer/test", async (req, res) => {
 
 });
 
+app.post("/api/printer/ticket", async (req, res) => {
+
+  try {
+
+    const { sale, business } = req.body;
+
+    if (!sale) {
+      return res.status(400).json({
+        success: false,
+        message: "No se recibió la venta"
+      });
+    }
+
+    // Verificar/conectar la impresora
+    const connected = await connectPrinter();
+
+    if (!connected) {
+      return res.status(500).json({
+        success: false,
+        message: "No se pudo conectar con la impresora"
+      });
+    }
+
+    // Imprimir ticket
+    await printTicket(sale, business);
+
+    res.json({
+      success: true,
+      message: "Ticket impreso correctamente"
+    });
+
+  } catch (error) {
+
+    console.error("Error imprimiendo ticket:", error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+
+  }
+
+});
+
 app.get("/", (req, res) => {
   res.json({ status: "Venta X Backend OK" });
 });
 
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+
   console.log(`Servidor en http://localhost:${PORT}`);
+
+  const connected = await connectPrinter();
+
+  if (connected) {
+
+    console.log("🖨️ Impresora térmica lista para imprimir");
+
+  } else {
+
+    console.log("⚠️ Impresora no disponible al iniciar el servidor");
+
+  }
+
 });
+
+const shutdown = async () => {
+
+  console.log("🛑 Cerrando servidor...");
+
+  await disconnectPrinter();
+
+  process.exit(0);
+
+};
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);

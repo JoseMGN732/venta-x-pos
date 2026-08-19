@@ -157,22 +157,70 @@ const POSPage = () => {
 
     if (productsResponse.success) {
 
-        data.products.splice(
-            0,
-            data.products.length,
-            ...productsResponse.products
+        const productosActualizados = productsResponse.products.filter(
+            (p: Product) =>
+                Number(p.negocioId) === Number(user?.negocioId)
+        );
+
+        setProducts(productosActualizados);
+
+    }
+
+    // Guardar la venta recién realizada
+    setLastSale(response.sale);
+
+    // Imprimir ticket
+    try {
+
+        const printerResponse = await fetch(
+            "http://localhost:3001/api/printer/ticket",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    sale: response.sale,
+                    business: data
+                })
+            }
+        );
+
+        const printerResult = await printerResponse.json();
+
+        if (!printerResult.success) {
+
+            console.error(
+                "Error imprimiendo ticket:",
+                printerResult.message
+            );
+
+            alert(
+                "La venta se registró correctamente, pero no se pudo imprimir el ticket."
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Error conectando con la impresora:",
+            error
+        );
+
+        alert(
+            "La venta se registró correctamente, pero no se pudo conectar con la impresora."
         );
 
     }
 
-    setLastSale(response.sale);
-
+    // Limpiar carrito
     setCart([]);
 
+    // Mostrar ticket en pantalla
     setShowReceipt(true);
 
   };
-
   const handlePrintTicket = () => {
     // Impresión mediante el navegador
     window.print();

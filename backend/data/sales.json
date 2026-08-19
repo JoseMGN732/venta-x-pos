@@ -520,5 +520,439 @@
     "ganancia": 25,
     "metodoPago": "Efectivo",
     "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787003189087",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "15:46:28",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      }
+    ],
+    "subtotal": 22,
+    "impuesto": 3.52,
+    "total": 25.52,
+    "ganancia": 4,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787003279568",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "15:47:59",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      }
+    ],
+    "subtotal": 22,
+    "impuesto": 3.52,
+    "total": 25.52,
+    "ganancia": 4,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787003346960",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "15:49:06",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 7,
+        "precioUnitario": 22,
+        "subtotal": 154
+      }
+    ],
+    "subtotal": 154,
+    "impuesto": 24.64,
+    "total": 178.64,
+    "ganancia": 28,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787003375336",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "15:49:35",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 7,
+        "precioUnitario": 22,
+        "subtotal": 154
+      }
+    ],
+    "subtotal": 154,
+    "impuesto": 24.64,
+    "total": 178.64,
+    "ganancia": 28,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787003669202",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "15:54:29",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 7,
+        "precioUnitario": 22,
+        "subtotal": 154
+      }
+    ],
+    "subtotal": 154,
+    "impuesto": 24.64,
+    "total": 178.64,
+    "ganancia": 28,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787003710531",
+    "negocioId": 1,
+    "fecha": "2026-08-17",
+    "hora": "15:55:10",
+    "items": [
+      {
+        "productId": 1785290733758,
+        "nombre": "Sabritas",
+        "cantidad": 1,
+        "precioUnitario": 20,
+        "subtotal": 20
+      },
+      {
+        "productId": 1785290967489,
+        "nombre": "Coca Cola 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      },
+      {
+        "productId": 1785291139880,
+        "nombre": "Crema",
+        "cantidad": 1,
+        "precioUnitario": 25,
+        "subtotal": 25
+      },
+      {
+        "productId": "1785705631203",
+        "nombre": "Cerveza Corona lata 250 ml",
+        "cantidad": 1,
+        "precioUnitario": 25,
+        "subtotal": 25
+      },
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      },
+      {
+        "productId": "1786410919256",
+        "nombre": "Jugo del Valle 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 18,
+        "subtotal": 18
+      }
+    ],
+    "subtotal": 132,
+    "impuesto": 21.12,
+    "total": 153.12,
+    "ganancia": 25,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787150207654",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:36:47",
+    "items": [
+      {
+        "productId": "1786410822837",
+        "nombre": "Galletas Maria Gamesa",
+        "cantidad": 5,
+        "precioUnitario": 22,
+        "subtotal": 110
+      }
+    ],
+    "subtotal": 110,
+    "impuesto": 17.6,
+    "total": 127.6,
+    "ganancia": 20,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787150496271",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:41:36",
+    "items": [
+      {
+        "productId": 1785290967489,
+        "nombre": "Coca Cola 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 22,
+        "subtotal": 22
+      }
+    ],
+    "subtotal": 22,
+    "impuesto": 3.52,
+    "total": 25.52,
+    "ganancia": 4,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787150508565",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:41:48",
+    "items": [
+      {
+        "productId": "1785705631203",
+        "nombre": "Cerveza Corona lata 250 ml",
+        "cantidad": 2,
+        "precioUnitario": 25,
+        "subtotal": 50
+      }
+    ],
+    "subtotal": 50,
+    "impuesto": 8,
+    "total": 58,
+    "ganancia": 10,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787150865731",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:47:45",
+    "items": [
+      {
+        "productId": "1786410919256",
+        "nombre": "Jugo del Valle 600 ml",
+        "cantidad": 3,
+        "precioUnitario": 18,
+        "subtotal": 54
+      }
+    ],
+    "subtotal": 54,
+    "impuesto": 8.64,
+    "total": 62.64,
+    "ganancia": 9,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787150874114",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:47:54",
+    "items": [
+      {
+        "productId": 1785290733758,
+        "nombre": "Sabritas",
+        "cantidad": 1,
+        "precioUnitario": 20,
+        "subtotal": 20
+      }
+    ],
+    "subtotal": 20,
+    "impuesto": 3.2,
+    "total": 23.2,
+    "ganancia": 4,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787150963883",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:49:23",
+    "items": [
+      {
+        "productId": 1785290733758,
+        "nombre": "Sabritas",
+        "cantidad": 1,
+        "precioUnitario": 20,
+        "subtotal": 20
+      }
+    ],
+    "subtotal": 20,
+    "impuesto": 3.2,
+    "total": 23.2,
+    "ganancia": 4,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787150968977",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:49:28",
+    "items": [
+      {
+        "productId": 1785290733758,
+        "nombre": "Sabritas",
+        "cantidad": 1,
+        "precioUnitario": 20,
+        "subtotal": 20
+      }
+    ],
+    "subtotal": 20,
+    "impuesto": 3.2,
+    "total": 23.2,
+    "ganancia": 4,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787150975291",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:49:35",
+    "items": [
+      {
+        "productId": 1785290733758,
+        "nombre": "Sabritas",
+        "cantidad": 1,
+        "precioUnitario": 20,
+        "subtotal": 20
+      }
+    ],
+    "subtotal": 20,
+    "impuesto": 3.2,
+    "total": 23.2,
+    "ganancia": 4,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787150985337",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:49:45",
+    "items": [
+      {
+        "productId": "1786410919256",
+        "nombre": "Jugo del Valle 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 18,
+        "subtotal": 18
+      }
+    ],
+    "subtotal": 18,
+    "impuesto": 2.88,
+    "total": 20.88,
+    "ganancia": 3,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787150990726",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:49:50",
+    "items": [
+      {
+        "productId": "1786410919256",
+        "nombre": "Jugo del Valle 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 18,
+        "subtotal": 18
+      }
+    ],
+    "subtotal": 18,
+    "impuesto": 2.88,
+    "total": 20.88,
+    "ganancia": 3,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787150995385",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:49:55",
+    "items": [
+      {
+        "productId": "1786410919256",
+        "nombre": "Jugo del Valle 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 18,
+        "subtotal": 18
+      }
+    ],
+    "subtotal": 18,
+    "impuesto": 2.88,
+    "total": 20.88,
+    "ganancia": 3,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787151000315",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:50:00",
+    "items": [
+      {
+        "productId": "1786410919256",
+        "nombre": "Jugo del Valle 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 18,
+        "subtotal": 18
+      }
+    ],
+    "subtotal": 18,
+    "impuesto": 2.88,
+    "total": 20.88,
+    "ganancia": 3,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
+  },
+  {
+    "id": "SALE-1787151005062",
+    "negocioId": 1,
+    "fecha": "2026-08-19",
+    "hora": "08:50:05",
+    "items": [
+      {
+        "productId": "1786410919256",
+        "nombre": "Jugo del Valle 600 ml",
+        "cantidad": 1,
+        "precioUnitario": 18,
+        "subtotal": 18
+      }
+    ],
+    "subtotal": 18,
+    "impuesto": 2.88,
+    "total": 20.88,
+    "ganancia": 3,
+    "metodoPago": "Efectivo",
+    "cajero": "Jose Manuel"
   }
 ]
